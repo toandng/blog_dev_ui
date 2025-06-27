@@ -1,0 +1,61 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.home {
+    // No specific styles needed, using global container
+}
+
+.hero {
+    text-align: center;
+    padding: $spacing-12 0 $spacing-16;
+
+    @include mobile-only {
+        padding: $spacing-8 0 $spacing-12;
+    }
+}
+
+.heroTitle {
+    @include heading-1;
+    margin-bottom: $spacing-4;
+    color: $text-primary;
+
+    @include mobile-only {
+        font-size: $text-3xl;
+    }
+}
+
+.heroDescription {
+    @include body-large;
+    color: $text-secondary;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: $leading-relaxed;
+
+    @include mobile-only {
+        font-size: $text-base;
+    }
+}
+
+.section {
+    margin-bottom: $spacing-16;
+
+    @include mobile-only {
+        margin-bottom: $spacing-12;
+    }
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.sectionTitle {
+    @include heading-2;
+    text-align: center;
+    margin-bottom: $spacing-8;
+    color: $text-primary;
+
+    @include mobile-only {
+        margin-bottom: $spacing-6;
+        font-size: $text-2xl;
+    }
+}

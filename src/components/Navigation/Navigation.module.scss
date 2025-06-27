@@ -1,0 +1,63 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.nav {
+    @include flex-center;
+    flex: 1;
+    max-width: 400px;
+
+    @include mobile-only {
+        display: none;
+    }
+}
+
+.navList {
+    @include flex-center;
+    gap: $spacing-8;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.navItem {
+    // No specific styles needed
+}
+
+.navLink {
+    @include body-base;
+    color: $text-secondary;
+    text-decoration: none;
+    font-weight: $font-medium;
+    padding: $spacing-2 $spacing-3;
+    border-radius: $radius-md;
+    transition: all $transition-base;
+    position: relative;
+
+    &:hover {
+        color: $primary-600;
+        background-color: $primary-50;
+        text-decoration: none;
+    }
+
+    &.active {
+        color: $primary-600;
+        background-color: $primary-50;
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: -$spacing-4;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background-color: $primary-600;
+            border-radius: 50%;
+        }
+    }
+
+    &:focus-visible {
+        outline: 2px solid $primary-500;
+        outline-offset: 2px;
+    }
+}

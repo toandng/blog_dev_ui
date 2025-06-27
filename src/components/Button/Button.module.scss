@@ -1,0 +1,85 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.button {
+    @include button-base;
+    position: relative;
+    overflow: hidden;
+
+    // Variants
+    &.primary {
+        @include button-primary;
+    }
+
+    &.secondary {
+        @include button-secondary;
+    }
+
+    &.ghost {
+        @include button-ghost;
+    }
+
+    &.danger {
+        @include button-base;
+        background-color: $error-500;
+        color: $text-white;
+
+        &:hover:not(:disabled) {
+            background-color: $error-600;
+        }
+
+        &:active:not(:disabled) {
+            background-color: $error-700;
+        }
+    }
+
+    // Sizes
+    &.sm {
+        padding: $spacing-2 $spacing-3;
+        font-size: $text-sm;
+        min-height: 32px;
+    }
+
+    &.md {
+        padding: $spacing-3 $spacing-4;
+        font-size: $text-base;
+        min-height: 40px;
+    }
+
+    &.lg {
+        padding: $spacing-4 $spacing-6;
+        font-size: $text-lg;
+        min-height: 48px;
+    }
+
+    // States
+    &.disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    &.loading {
+        cursor: wait;
+        pointer-events: none;
+    }
+
+    &.fullWidth {
+        width: 100%;
+    }
+}
+
+.spinner {
+    @include loading-spinner;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    border-width: 2px;
+}
+
+.hiddenText {
+    opacity: 0;
+}

@@ -1,0 +1,201 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.commentItem {
+  margin-bottom: $spacing-4;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.comment {
+  display: flex;
+  gap: $spacing-3;
+
+  @include mobile-only {
+    gap: $spacing-2;
+  }
+}
+
+.avatar {
+  flex-shrink: 0;
+
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid $border-light;
+
+    @include mobile-only {
+      width: 36px;
+      height: 36px;
+    }
+  }
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+.header {
+  margin-bottom: $spacing-2;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  flex-wrap: wrap;
+}
+
+.authorName {
+  @include body-base;
+  font-weight: $font-semibold;
+  color: $text-primary;
+}
+
+.date {
+  @include body-small;
+  color: $text-muted;
+}
+
+.edited {
+  @include body-small;
+  color: $text-muted;
+  font-style: italic;
+}
+
+.text {
+  margin-bottom: $spacing-3;
+
+  p {
+    @include body-base;
+    color: $text-primary;
+    line-height: $leading-relaxed;
+    margin: 0;
+    word-wrap: break-word;
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: $spacing-4;
+  margin-bottom: $spacing-2;
+
+  @include mobile-only {
+    gap: $spacing-3;
+  }
+}
+
+.likeButton,
+.replyButton,
+.editButton,
+.deleteButton {
+  display: flex;
+  align-items: center;
+  gap: $spacing-1;
+  background: none;
+  border: none;
+  padding: $spacing-1 $spacing-2;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  transition: all $transition-base;
+  @include body-small;
+  font-weight: $font-medium;
+
+  &:hover {
+    background-color: $bg-secondary;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.likeButton {
+  color: $text-muted;
+
+  &.liked {
+    color: $error-500;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.replyButton {
+  color: $primary-600;
+
+  &:hover {
+    color: $primary-700;
+  }
+}
+
+.editButton {
+  color: $warning-600;
+
+  &:hover {
+    color: $warning-700;
+  }
+}
+
+.deleteButton {
+  color: $error-600;
+
+  &:hover {
+    color: $error-700;
+  }
+}
+
+.replyForm {
+  margin-top: $spacing-3;
+  padding: $spacing-4;
+  background-color: $bg-secondary;
+  border-radius: $radius-md;
+}
+
+.replyInput {
+  width: 100%;
+  min-height: 80px;
+  padding: $spacing-3;
+  border: 1px solid $border-light;
+  border-radius: $radius-md;
+  resize: vertical;
+  font-family: inherit;
+  @include body-base;
+  color: $text-primary;
+  background-color: $surface-primary;
+  margin-bottom: $spacing-3;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-500;
+    box-shadow: 0 0 0 3px rgba($primary-500, 0.1);
+  }
+
+  &::placeholder {
+    color: $text-muted;
+  }
+}
+
+.replyActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $spacing-2;
+}
+
+.replies {
+  margin-top: $spacing-4;
+  padding-left: $spacing-6;
+  border-left: 2px solid $border-light;
+
+  @include mobile-only {
+    padding-left: $spacing-4;
+  }
+}
