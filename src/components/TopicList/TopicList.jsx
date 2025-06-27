@@ -42,7 +42,7 @@ const TopicList = ({ topics = [], loading = false, className, ...props }) => {
                 {topics.map((topic) => (
                     <Link
                         key={topic.id}
-                        to={`/topics?topic=${topic.slug}`}
+                        to={`/topics/${topic.slug}`}
                         className={styles.topicCard}
                     >
                         <div className={styles.cardContent}>

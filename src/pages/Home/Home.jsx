@@ -6,27 +6,39 @@ const Home = () => {
     const mockTopics = [
         {
             id: 1,
-            name: "React",
-            slug: "react",
-            description: "Learn React development and best practices",
-            icon: "⚛️",
-            postCount: 24,
+            name: "JavaScript",
+            slug: "javascript",
+            description:
+                "Everything about JavaScript programming language, frameworks, and best practices",
+            icon: "🚀",
+            postCount: 45,
         },
         {
             id: 2,
-            name: "JavaScript",
-            slug: "javascript",
-            description: "Modern JavaScript techniques and tutorials",
-            icon: "🟨",
+            name: "React",
+            slug: "react",
+            description:
+                "React.js tutorials, tips, and advanced patterns for building modern web applications",
+            icon: "⚛️",
             postCount: 32,
         },
         {
             id: 3,
+            name: "Node.js",
+            slug: "nodejs",
+            description:
+                "Server-side JavaScript development with Node.js and its ecosystem",
+            icon: "🟢",
+            postCount: 28,
+        },
+        {
+            id: 4,
             name: "CSS",
             slug: "css",
-            description: "CSS styling tips and advanced techniques",
+            description:
+                "Modern CSS techniques, animations, and responsive design patterns",
             icon: "🎨",
-            postCount: 18,
+            postCount: 23,
         },
     ];
 

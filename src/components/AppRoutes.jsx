@@ -5,6 +5,7 @@ import AuthLayout from "../layouts/AuthLayout/AuthLayout";
 // Pages
 import Home from "../pages/Home/Home";
 import Topic from "../pages/Topic/Topic";
+import TopicsListing from "../pages/TopicsListing/TopicsListing";
 import BlogDetail from "../pages/BlogDetail/BlogDetail";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
@@ -18,7 +19,8 @@ const AppRoutes = () => {
             {/* App Layout Routes */}
             <Route path="/" element={<AppLayout />}>
                 <Route index element={<Home />} />
-                <Route path="topics" element={<Topic />} />
+                <Route path="topics" element={<TopicsListing />} />
+                <Route path="topics/:slug" element={<Topic />} />
                 <Route path="blog/:slug" element={<BlogDetail />} />
             </Route>
 
