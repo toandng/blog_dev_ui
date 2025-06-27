@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Badge from "../Badge/Badge";
 import EmptyState from "../EmptyState/EmptyState";
+import FallbackImage from "../FallbackImage/FallbackImage";
 import styles from "./TopicList.module.scss";
 
 const TopicList = ({ topics = [], loading = false, className, ...props }) => {
@@ -53,7 +54,7 @@ const TopicList = ({ topics = [], loading = false, className, ...props }) => {
                                             {topic.icon}
                                         </span>
                                     ) : (
-                                        <img
+                                        <FallbackImage
                                             src={topic.icon}
                                             alt={topic.name}
                                             className={styles.image}

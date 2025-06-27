@@ -9,6 +9,7 @@ export { default as Pagination } from "./Pagination/Pagination";
 export { default as Loading } from "./Loading/Loading";
 export { default as EmptyState } from "./EmptyState/EmptyState";
 export { default as ErrorBoundary } from "./ErrorBoundary/ErrorBoundary";
+export { default as FallbackImage } from "./FallbackImage/FallbackImage";
 
 // Layout Components
 export { default as Header } from "./Header/Header";

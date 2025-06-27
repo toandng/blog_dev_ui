@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Card from "../Card/Card";
 import Badge from "../Badge/Badge";
+import FallbackImage from "../FallbackImage/FallbackImage";
 import styles from "./PostCard.module.scss";
 
 const PostCard = ({
@@ -59,17 +60,15 @@ const PostCard = ({
             {...props}
         >
             {/* Featured Image */}
-            {featuredImage && (
-                <div className={styles.imageContainer}>
-                    <Link to={`/blog/${slug}`}>
-                        <img
-                            src={featuredImage}
-                            alt={title}
-                            className={styles.image}
-                        />
-                    </Link>
-                </div>
-            )}
+            <div className={styles.imageContainer}>
+                <Link to={`/blog/${slug}`}>
+                    <FallbackImage
+                        src={featuredImage}
+                        alt={title}
+                        className={styles.image}
+                    />
+                </Link>
+            </div>
 
             {/* Content */}
             <div className={styles.content}>
@@ -96,7 +95,7 @@ const PostCard = ({
                 <div className={styles.meta}>
                     <div className={styles.author}>
                         {author?.avatar && (
-                            <img
+                            <FallbackImage
                                 src={author.avatar}
                                 alt={author.name}
                                 className={styles.authorAvatar}
