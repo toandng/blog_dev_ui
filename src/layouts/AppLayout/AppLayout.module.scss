@@ -8,16 +8,16 @@
 
 .main {
     flex: 1;
-    padding-top: $spacing-6;
-    padding-bottom: $spacing-6;
+    padding-top: $spacing-12;
+    padding-bottom: $spacing-12;
 
     @include tablet-up {
-        padding-top: $spacing-8;
-        padding-bottom: $spacing-8;
+        padding-top: $spacing-16;
+        padding-bottom: $spacing-16;
     }
 
     @include desktop-up {
-        padding-top: $spacing-12;
-        padding-bottom: $spacing-12;
+        padding-top: $spacing-20;
+        padding-bottom: $spacing-20;
     }
 }
