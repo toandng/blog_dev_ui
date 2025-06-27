@@ -135,7 +135,7 @@ PostCard.propTypes = {
     publishedAt: PropTypes.string.isRequired,
     readTime: PropTypes.number,
     topic: PropTypes.string,
-    slug: PropTypes.string.isRequired,
+    slug: PropTypes.string,
     featuredImage: PropTypes.string,
     loading: PropTypes.bool,
     compact: PropTypes.bool,
