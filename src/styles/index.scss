@@ -78,7 +78,9 @@ p {
     @include body-base;
 }
 
-a {
+// Only style plain links without classes or with .link class
+a:not([class]),
+a.link {
     color: $primary-600;
     text-decoration: none;
     transition: color $transition-base;
@@ -87,6 +89,18 @@ a {
         color: $primary-700;
         text-decoration: underline;
     }
+
+    &:focus-visible {
+        outline: 2px solid $primary-500;
+        outline-offset: 2px;
+        border-radius: $radius-sm;
+    }
+}
+
+// Reset for all links to prevent inheritance issues
+a {
+    text-decoration: none;
+    color: inherit;
 
     &:focus-visible {
         outline: 2px solid $primary-500;

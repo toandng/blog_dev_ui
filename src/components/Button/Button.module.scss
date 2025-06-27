@@ -6,17 +6,56 @@
     position: relative;
     overflow: hidden;
 
+    // Ensure button styles override global link styles
+    &,
+    &:link,
+    &:visited,
+    &:hover,
+    &:active {
+        text-decoration: none !important;
+    }
+
     // Variants
     &.primary {
         @include button-primary;
+
+        &,
+        &:link,
+        &:visited {
+            color: $text-white !important;
+        }
+
+        &:hover:not(:disabled) {
+            color: $text-white !important;
+        }
     }
 
     &.secondary {
         @include button-secondary;
+
+        &,
+        &:link,
+        &:visited {
+            color: $text-primary !important;
+        }
+
+        &:hover:not(:disabled) {
+            color: $text-primary !important;
+        }
     }
 
     &.ghost {
         @include button-ghost;
+
+        &,
+        &:link,
+        &:visited {
+            color: $text-primary !important;
+        }
+
+        &:hover:not(:disabled) {
+            color: $text-primary !important;
+        }
     }
 
     &.danger {

@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import clsx from "clsx";
+import { Children, cloneElement, isValidElement } from "react";
 import styles from "./Button.module.scss";
 
 const Button = ({
@@ -12,6 +13,7 @@ const Button = ({
     type = "button",
     onClick,
     className,
+    asChild = false,
     ...props
 }) => {
     const buttonClasses = clsx(
@@ -26,6 +28,24 @@ const Button = ({
         className
     );
 
+    const content = (
+        <>
+            {loading && <span className={styles.spinner} aria-hidden="true" />}
+            <span className={loading ? styles.hiddenText : ""}>{children}</span>
+        </>
+    );
+
+    if (asChild) {
+        const child = Children.only(children);
+        if (isValidElement(child)) {
+            return cloneElement(child, {
+                className: clsx(buttonClasses, child.props.className),
+                ...props,
+                children: child.props.children,
+            });
+        }
+    }
+
     return (
         <button
             type={type}
@@ -34,8 +54,7 @@ const Button = ({
             onClick={onClick}
             {...props}
         >
-            {loading && <span className={styles.spinner} aria-hidden="true" />}
-            <span className={loading ? styles.hiddenText : ""}>{children}</span>
+            {content}
         </button>
     );
 };
@@ -50,6 +69,7 @@ Button.propTypes = {
     type: PropTypes.oneOf(["button", "submit", "reset"]),
     onClick: PropTypes.func,
     className: PropTypes.string,
+    asChild: PropTypes.bool,
 };
 
 export default Button;
