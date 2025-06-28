@@ -1,0 +1,347 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.userCard {
+    @include card-base;
+    padding: $spacing-6;
+    transition: all $transition-base;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-4;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: $shadow-lg;
+    }
+
+    @include mobile-only {
+        padding: $spacing-4;
+        gap: $spacing-3;
+    }
+}
+
+.header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $spacing-4;
+}
+
+.avatarLink {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.avatarContainer {
+    position: relative;
+    display: inline-block;
+}
+
+.avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid $border-light;
+    transition: border-color $transition-base;
+
+    .avatarLink:hover & {
+        border-color: $primary-300;
+    }
+
+    .userCard.compact & {
+        width: 48px;
+        height: 48px;
+        border-width: 2px;
+    }
+
+    @include mobile-only {
+        width: 56px;
+        height: 56px;
+    }
+}
+
+.verifiedBadge {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 20px;
+    height: 20px;
+    background-color: $primary-600;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid $bg-primary;
+
+    svg {
+        width: 12px;
+        height: 12px;
+    }
+
+    .userCard.compact & {
+        width: 16px;
+        height: 16px;
+        bottom: -1px;
+        right: -1px;
+
+        svg {
+            width: 10px;
+            height: 10px;
+        }
+    }
+}
+
+.actions {
+    flex-shrink: 0;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-3;
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-1;
+}
+
+.nameLink {
+    text-decoration: none;
+    color: inherit;
+
+    &:hover .name {
+        color: $primary-600;
+    }
+}
+
+.name {
+    @include heading-4;
+    margin: 0;
+    color: $text-primary;
+    transition: color $transition-base;
+
+    .userCard.compact & {
+        font-size: $text-base;
+        font-weight: $font-semibold;
+    }
+}
+
+.username {
+    @include body-small;
+    color: $text-muted;
+    margin: 0;
+    font-weight: $font-medium;
+}
+
+.title {
+    @include body-small;
+    color: $text-secondary;
+    margin: 0;
+    font-style: italic;
+}
+
+.location {
+    @include body-small;
+    color: $text-muted;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: $spacing-1;
+
+    svg {
+        flex-shrink: 0;
+        opacity: 0.7;
+    }
+}
+
+.reason {
+    @include body-small;
+    color: $info-600;
+    margin: $spacing-2 0 0 0;
+    font-size: $text-xs;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    gap: $spacing-1;
+}
+
+.mutualConnections {
+    @include body-small;
+    color: $primary-600;
+    margin: $spacing-1 0 0 0;
+    font-size: $text-xs;
+    font-weight: $font-medium;
+    display: flex;
+    align-items: center;
+    gap: $spacing-1;
+}
+
+.bio {
+    @include body-small;
+    color: $text-secondary;
+    margin: 0;
+    line-height: $leading-relaxed;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+    .userCard.compact & {
+        -webkit-line-clamp: 2;
+    }
+
+    .userCard.detailed & {
+        -webkit-line-clamp: none;
+        overflow: visible;
+    }
+}
+
+.badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-2;
+}
+
+.stats {
+    display: flex;
+    gap: $spacing-4;
+    padding-top: $spacing-3;
+    border-top: 1px solid $border-light;
+
+    @include mobile-only {
+        gap: $spacing-3;
+    }
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-1;
+    flex: 1;
+}
+
+.statValue {
+    font-weight: $font-bold;
+    color: $text-primary;
+    font-size: $text-base;
+
+    .userCard.compact & {
+        font-size: $text-sm;
+    }
+}
+
+.statLabel {
+    @include body-small;
+    color: $text-muted;
+    text-transform: capitalize;
+    font-size: $text-xs;
+}
+
+// Variant: Compact
+.userCard.compact {
+    padding: $spacing-4;
+    gap: $spacing-3;
+
+    .header {
+        gap: $spacing-3;
+    }
+
+    .content {
+        gap: $spacing-2;
+    }
+
+    .stats {
+        gap: $spacing-3;
+        padding-top: $spacing-2;
+    }
+
+    @include mobile-only {
+        padding: $spacing-3;
+    }
+}
+
+// Variant: Detailed
+.userCard.detailed {
+    padding: $spacing-8;
+
+    .avatar {
+        width: 80px;
+        height: 80px;
+    }
+
+    .name {
+        font-size: $text-xl;
+    }
+
+    @include mobile-only {
+        padding: $spacing-6;
+
+        .avatar {
+            width: 72px;
+            height: 72px;
+        }
+    }
+}
+
+// Loading skeleton
+.userCard.skeleton {
+    .avatar {
+        background-color: $bg-muted;
+        animation: shimmer 1.5s infinite;
+    }
+
+    .name,
+    .username,
+    .bio {
+        background-color: $bg-muted;
+        border-radius: $radius-sm;
+        animation: shimmer 1.5s infinite;
+        color: transparent;
+    }
+
+    .name {
+        height: 20px;
+        width: 120px;
+    }
+
+    .username {
+        height: 16px;
+        width: 80px;
+    }
+
+    .bio {
+        height: 40px;
+        width: 100%;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+// Focus states for accessibility
+.avatarLink:focus-visible,
+.nameLink:focus-visible {
+    outline: 2px solid $primary-500;
+    outline-offset: 2px;
+    border-radius: $radius-sm;
+}
+
+// Dark mode adjustments
+@media (prefers-color-scheme: dark) {
+    .verifiedBadge {
+        border-color: $gray-800;
+    }
+}

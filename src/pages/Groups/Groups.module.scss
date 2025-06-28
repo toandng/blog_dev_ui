@@ -1,0 +1,41 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.groupsPage {
+    min-height: 100vh;
+    background-color: $bg-primary;
+    padding: $spacing-6 $spacing-4;
+
+    @include mobile-only {
+        padding: $spacing-4 $spacing-2;
+    }
+}
+
+.pageHeader {
+    text-align: center;
+    margin-bottom: $spacing-8;
+
+    h1 {
+        @include heading-xl;
+        color: $text-primary;
+        margin-bottom: $spacing-2;
+    }
+}
+
+.searchContainer {
+    max-width: 500px;
+    margin: 0 auto $spacing-6;
+}
+
+.groupsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: $spacing-6;
+    max-width: 1400px;
+    margin: 0 auto;
+
+    @include mobile-only {
+        grid-template-columns: 1fr;
+        gap: $spacing-4;
+    }
+}

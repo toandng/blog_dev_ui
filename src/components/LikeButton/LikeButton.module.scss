@@ -1,0 +1,305 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.likeButton {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-2;
+    padding: $spacing-2 $spacing-3;
+    border: none;
+    background: none;
+    border-radius: $radius-full;
+    cursor: pointer;
+    transition: all $transition-base;
+    position: relative;
+    overflow: visible;
+
+    &:hover:not(.disabled) {
+        background-color: rgba($error-500, 0.1);
+        transform: scale(1.05);
+    }
+
+    &:active:not(.disabled) {
+        transform: scale(0.95);
+    }
+
+    &.disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    &.loading {
+        cursor: wait;
+    }
+}
+
+.iconContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.heartIcon {
+    transition: all $transition-base;
+    flex-shrink: 0;
+
+    .likeButton.unliked & {
+        color: $text-muted;
+        stroke-width: 2;
+    }
+
+    .likeButton.liked & {
+        color: $error-500;
+        stroke-width: 1;
+        animation: heartBeat 0.6s ease-in-out;
+    }
+
+    .likeButton:hover:not(.disabled) .unliked & {
+        color: $error-400;
+        transform: scale(1.1);
+    }
+}
+
+.count {
+    font-weight: $font-medium;
+    font-size: $text-sm;
+    line-height: 1;
+    transition: all $transition-base;
+
+    .likeButton.unliked & {
+        color: $text-muted;
+    }
+
+    .likeButton.liked & {
+        color: $error-600;
+        font-weight: $font-semibold;
+    }
+
+    .likeButton:hover:not(.disabled) & {
+        color: $error-600;
+    }
+
+    .likeButton.animating & {
+        animation: countBounce 0.4s ease-out;
+    }
+}
+
+// Size variants
+.likeButton {
+    &.sm {
+        padding: $spacing-1 $spacing-2;
+        gap: $spacing-1;
+
+        .heartIcon {
+            width: 16px;
+            height: 16px;
+        }
+
+        .count {
+            font-size: $text-xs;
+        }
+    }
+
+    &.md {
+        padding: $spacing-2 $spacing-3;
+        gap: $spacing-2;
+
+        .heartIcon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .count {
+            font-size: $text-sm;
+        }
+    }
+
+    &.lg {
+        padding: $spacing-3 $spacing-4;
+        gap: $spacing-2;
+
+        .heartIcon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .count {
+            font-size: $text-base;
+        }
+    }
+}
+
+// Animation effects
+.animationHearts {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.animationHeart {
+    position: absolute;
+    color: $error-500;
+    opacity: 0;
+    pointer-events: none;
+
+    &.heart1 {
+        animation: burstOut 0.6s ease-out 0.1s;
+        transform: translate(-20px, -20px);
+    }
+
+    &.heart2 {
+        animation: burstOut 0.6s ease-out 0.15s;
+        transform: translate(20px, -20px);
+    }
+
+    &.heart3 {
+        animation: burstOut 0.6s ease-out 0.2s;
+        transform: translate(-30px, 0px);
+    }
+
+    &.heart4 {
+        animation: burstOut 0.6s ease-out 0.25s;
+        transform: translate(30px, 0px);
+    }
+
+    &.heart5 {
+        animation: burstOut 0.6s ease-out 0.3s;
+        transform: translate(-15px, 20px);
+    }
+
+    &.heart6 {
+        animation: burstOut 0.6s ease-out 0.35s;
+        transform: translate(15px, 20px);
+    }
+}
+
+// Keyframe animations
+@keyframes heartBeat {
+    0% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1.2);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    75% {
+        transform: scale(1.15);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes countBounce {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes burstOut {
+    0% {
+        opacity: 1;
+        transform: scale(0) translate(0, 0);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.2) translate(var(--tx, 0), var(--ty, 0));
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.8) translate(var(--tx, 0), calc(var(--ty, 0) - 20px));
+    }
+}
+
+// Focus states for accessibility
+.likeButton:focus-visible {
+    outline: 2px solid $primary-500;
+    outline-offset: 2px;
+}
+
+// Hover effect improvements
+.likeButton:hover:not(.disabled) {
+    .heartIcon {
+        filter: drop-shadow(0 0 8px rgba($error-500, 0.3));
+    }
+}
+
+// Loading state
+.likeButton.loading {
+    .heartIcon {
+        animation: pulse 1s infinite;
+    }
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+    .likeButton.unliked {
+        &:hover:not(.disabled) {
+            background-color: rgba($error-400, 0.2);
+        }
+
+        .heartIcon {
+            color: $gray-400;
+        }
+
+        .count {
+            color: $gray-400;
+        }
+    }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+    .likeButton,
+    .heartIcon,
+    .count {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .animationHearts {
+        display: none;
+    }
+
+    .likeButton:hover:not(.disabled) {
+        transform: none;
+    }
+
+    .likeButton:active:not(.disabled) {
+        transform: none;
+    }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+    .likeButton {
+        border: 1px solid $text-primary;
+
+        &.liked {
+            background-color: $error-600;
+            color: white;
+            border-color: $error-600;
+        }
+    }
+}

@@ -1,0 +1,579 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.chatSidebar {
+    width: 320px;
+    height: 100%;
+    background-color: $surface-primary;
+    border-right: 1px solid $border-light;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    @include mobile-only {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid $border-light;
+    }
+}
+
+.sidebarHeader {
+    padding: $spacing-4;
+    background-color: $bg-secondary;
+    border-bottom: 1px solid $border-light;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.headerTitle {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+
+    h2 {
+        @include heading-base;
+        font-size: $text-lg;
+        color: $text-primary;
+        margin: 0;
+    }
+}
+
+.totalUnread {
+    font-size: $text-xs;
+    min-width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.newChatButton {
+    flex-shrink: 0;
+}
+
+.searchSection {
+    padding: $spacing-4;
+    border-bottom: 1px solid $border-light;
+    flex-shrink: 0;
+}
+
+.searchInput {
+    width: 100%;
+
+    input {
+        padding-left: $spacing-6;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z'/%3e%3c/svg%3e");
+        background-position: $spacing-2 center;
+        background-repeat: no-repeat;
+        background-size: 16px 16px;
+    }
+}
+
+.filtersSection {
+    border-bottom: 1px solid $border-light;
+    flex-shrink: 0;
+}
+
+.filterTabs {
+    display: flex;
+    overflow-x: auto;
+
+    // Hide scrollbar
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.filterTab {
+    flex: 1;
+    padding: $spacing-3 $spacing-2;
+    border: none;
+    background: none;
+    color: $text-secondary;
+    font-size: $text-sm;
+    font-weight: $font-medium;
+    cursor: pointer;
+    transition: all $transition-base;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+
+    &:hover {
+        color: $text-primary;
+        background-color: rgba($primary-500, 0.05);
+    }
+
+    &.active {
+        color: $primary-600;
+        border-bottom-color: $primary-500;
+        background-color: rgba($primary-500, 0.1);
+    }
+
+    @include mobile-only {
+        font-size: $text-xs;
+        padding: $spacing-2;
+    }
+}
+
+.conversationsList {
+    flex: 1;
+    overflow-y: auto;
+
+    // Custom scrollbar
+    scrollbar-width: thin;
+    scrollbar-color: $gray-300 transparent;
+
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $gray-300;
+        border-radius: $radius-full;
+
+        &:hover {
+            background-color: $gray-400;
+        }
+    }
+}
+
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-8 $spacing-4;
+    text-align: center;
+    color: $text-muted;
+    height: 200px;
+
+    p {
+        @include body-base;
+        margin: 0 0 $spacing-2 0;
+        font-weight: $font-medium;
+    }
+
+    span {
+        @include body-small;
+        margin: 0;
+    }
+}
+
+.emptyIcon {
+    font-size: $text-4xl;
+    margin-bottom: $spacing-3;
+    opacity: 0.7;
+}
+
+.startChatButton {
+    margin-top: $spacing-4;
+}
+
+.conversationItem {
+    display: flex;
+    align-items: center;
+    padding: $spacing-3 $spacing-4;
+    cursor: pointer;
+    transition: all $transition-base;
+    border-bottom: 1px solid transparent;
+    position: relative;
+
+    &:hover {
+        background-color: $bg-secondary;
+    }
+
+    &.selected {
+        background-color: rgba($primary-500, 0.1);
+        border-left: 3px solid $primary-500;
+
+        .conversationName {
+            color: $primary-700;
+        }
+    }
+
+    &.unread {
+        background-color: rgba($primary-500, 0.03);
+
+        .conversationName {
+            font-weight: $font-bold;
+        }
+
+        .lastMessage {
+            font-weight: $font-medium;
+        }
+    }
+
+    &:last-child {
+        border-bottom-color: transparent;
+    }
+}
+
+.conversationAvatar {
+    position: relative;
+    margin-right: $spacing-3;
+    flex-shrink: 0;
+}
+
+.avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: $radius-full;
+}
+
+.onlineIndicator {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    background-color: $success-500;
+    border: 2px solid $surface-primary;
+    border-radius: $radius-full;
+    animation: pulse 2s infinite;
+}
+
+.conversationContent {
+    flex: 1;
+    min-width: 0;
+}
+
+.conversationHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: $spacing-1;
+}
+
+.conversationName {
+    @include body-base;
+    font-weight: $font-medium;
+    color: $text-primary;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    margin-right: $spacing-2;
+}
+
+.conversationTime {
+    @include body-small;
+    color: $text-muted;
+    font-size: $text-xs;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.conversationFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.lastMessage {
+    flex: 1;
+    min-width: 0;
+    margin-right: $spacing-2;
+
+    .messagePrefix {
+        color: $text-muted;
+        font-size: $text-sm;
+    }
+
+    .messageText {
+        @include body-small;
+        color: $text-secondary;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .noMessages {
+        @include body-small;
+        color: $text-muted;
+        font-style: italic;
+    }
+}
+
+.unreadBadge {
+    font-size: $text-xs;
+    min-width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+// Animations
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.conversationItem {
+    animation: slideIn 0.3s ease-out;
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+    .chatSidebar {
+        background-color: $gray-800;
+        border-right-color: $gray-700;
+    }
+
+    .sidebarHeader {
+        background-color: $gray-700;
+        border-bottom-color: $gray-600;
+    }
+
+    .searchSection,
+    .filtersSection {
+        border-bottom-color: $gray-600;
+    }
+
+    .filterTab {
+        &:hover {
+            background-color: rgba($primary-500, 0.1);
+        }
+
+        &.active {
+            background-color: rgba($primary-500, 0.15);
+            color: $primary-400;
+        }
+    }
+
+    .conversationItem {
+        &:hover {
+            background-color: $gray-700;
+        }
+
+        &.selected {
+            background-color: rgba($primary-500, 0.15);
+            border-left-color: $primary-400;
+        }
+
+        &.unread {
+            background-color: rgba($primary-500, 0.08);
+        }
+    }
+
+    .onlineIndicator {
+        border-color: $gray-800;
+    }
+}
+
+// Mobile optimizations
+@include mobile-only {
+    .chatSidebar {
+        height: auto;
+        max-height: 50vh;
+    }
+
+    .conversationItem {
+        padding: $spacing-4;
+    }
+
+    .avatar {
+        width: 44px;
+        height: 44px;
+    }
+
+    .conversationName {
+        font-size: $text-base;
+    }
+
+    .lastMessage .messageText {
+        font-size: $text-sm;
+    }
+
+    .filterTabs {
+        padding: 0 $spacing-2;
+    }
+
+    .filterTab {
+        min-width: 80px;
+    }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+    .chatSidebar {
+        border-right: 2px solid $text-primary;
+    }
+
+    .conversationItem {
+        border: 1px solid transparent;
+
+        &:hover,
+        &.selected {
+            border-color: $text-primary;
+            background-color: $text-primary;
+            color: $surface-primary;
+        }
+    }
+
+    .filterTab.active {
+        background-color: $text-primary;
+        color: $surface-primary;
+    }
+}
+
+// Print styles
+@media print {
+    .sidebarHeader,
+    .searchSection,
+    .filtersSection {
+        display: none;
+    }
+
+    .chatSidebar {
+        border-right: none;
+        box-shadow: none;
+    }
+
+    .conversationItem {
+        page-break-inside: avoid;
+        border: 1px solid $gray-300;
+        margin-bottom: $spacing-2;
+    }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+    .conversationItem {
+        animation: none;
+        transition: none;
+    }
+
+    .onlineIndicator {
+        animation: none;
+    }
+
+    .filterTab {
+        transition: none;
+    }
+}
+
+// Focus states for accessibility
+.conversationItem:focus-visible {
+    outline: 2px solid $primary-500;
+    outline-offset: -2px;
+}
+
+.filterTab:focus-visible {
+    outline: 2px solid $primary-500;
+    outline-offset: 2px;
+}
+
+.newChatButton:focus-visible {
+    outline: 2px solid $primary-500;
+    outline-offset: 2px;
+}
+
+// Loading state
+.conversationItem[data-loading="true"] {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+// Keyboard navigation
+.conversationItem[tabindex]:focus {
+    background-color: rgba($primary-500, 0.1);
+    outline: 2px solid $primary-500;
+    outline-offset: -2px;
+}
+
+// Connection status indicator
+.connectionStatus {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: $warning-100;
+    color: $warning-800;
+    text-align: center;
+    padding: $spacing-1;
+    font-size: $text-xs;
+    z-index: 100;
+    transform: translateY(-100%);
+    transition: transform $transition-base;
+
+    &.show {
+        transform: translateY(0);
+    }
+
+    &.connected {
+        background-color: $success-100;
+        color: $success-800;
+    }
+
+    &.disconnected {
+        background-color: $danger-100;
+        color: $danger-800;
+    }
+}
+
+// Group conversation indicator
+.conversationItem[data-group="true"] {
+    .avatar {
+        border: 2px solid $primary-300;
+    }
+
+    .conversationName::before {
+        content: "👥 ";
+        opacity: 0.7;
+    }
+}
+
+// Pinned conversation
+.conversationItem[data-pinned="true"] {
+    order: -1;
+
+    .conversationName::after {
+        content: "📌";
+        margin-left: $spacing-1;
+        opacity: 0.7;
+        font-size: $text-xs;
+    }
+}
+
+// Message type indicators
+.lastMessage {
+    &[data-type="image"]::before {
+        content: "📷 ";
+        opacity: 0.7;
+    }
+
+    &[data-type="file"]::before {
+        content: "📎 ";
+        opacity: 0.7;
+    }
+
+    &[data-type="voice"]::before {
+        content: "🎵 ";
+        opacity: 0.7;
+    }
+}

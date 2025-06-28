@@ -1,0 +1,657 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.groupCard {
+    background-color: $surface-primary;
+    border: 1px solid $border-light;
+    border-radius: $radius-lg;
+    overflow: hidden;
+    transition: all $transition-base;
+    box-shadow: $shadow-sm;
+    position: relative;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: $shadow-lg;
+        border-color: $border-medium;
+    }
+
+    @include mobile-only {
+        border-radius: $radius-md;
+    }
+}
+
+.groupHeader {
+    position: relative;
+    height: 120px;
+    background: linear-gradient(135deg, $primary-100, $primary-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    @include mobile-only {
+        height: 100px;
+    }
+}
+
+.coverImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform $transition-base;
+    }
+
+    .groupCard:hover & img {
+        transform: scale(1.05);
+    }
+}
+
+.groupAvatar {
+    position: relative;
+    z-index: 2;
+    margin-bottom: -30px;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: $radius-full;
+    border: 4px solid $surface-primary;
+    box-shadow: $shadow-md;
+
+    @include mobile-only {
+        width: 70px;
+        height: 70px;
+        border-width: 3px;
+    }
+}
+
+.privacyBadge {
+    position: absolute;
+    top: $spacing-3;
+    right: $spacing-3;
+    background-color: rgba($surface-primary, 0.9);
+    backdrop-filter: blur(8px);
+    padding: $spacing-1 $spacing-2;
+    border-radius: $radius-md;
+    font-size: $text-sm;
+    z-index: 3;
+    box-shadow: $shadow-sm;
+}
+
+.groupInfo {
+    padding: $spacing-6 $spacing-4 $spacing-4;
+}
+
+.groupTitle {
+    margin-bottom: $spacing-3;
+}
+
+.groupName {
+    @include heading-base;
+    font-size: $text-lg;
+    color: $text-primary;
+    margin: 0 0 $spacing-1 0;
+    cursor: pointer;
+    transition: color $transition-base;
+
+    &:hover {
+        color: $primary-600;
+    }
+
+    @include mobile-only {
+        font-size: $text-base;
+    }
+}
+
+.groupMeta {
+    display: flex;
+    align-items: center;
+    gap: $spacing-3;
+
+    @include mobile-only {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: $spacing-1;
+    }
+}
+
+.privacy,
+.memberCount {
+    @include body-small;
+    color: $text-muted;
+    font-size: $text-xs;
+    display: flex;
+    align-items: center;
+    gap: $spacing-1;
+}
+
+.groupDescription {
+    @include body-base;
+    color: $text-secondary;
+    margin: 0 0 $spacing-4 0;
+    line-height: $leading-relaxed;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.groupStats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-3;
+    margin-bottom: $spacing-4;
+    padding: $spacing-3;
+    background-color: $bg-secondary;
+    border-radius: $radius-md;
+    border: 1px solid $border-light;
+
+    @include mobile-only {
+        grid-template-columns: 1fr;
+        gap: $spacing-2;
+        padding: $spacing-2;
+    }
+}
+
+.stat {
+    text-align: center;
+
+    @include mobile-only {
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.statValue {
+    @include heading-base;
+    font-size: $text-lg;
+    color: $primary-600;
+    font-weight: $font-bold;
+    display: block;
+
+    @include mobile-only {
+        font-size: $text-base;
+    }
+}
+
+.statLabel {
+    @include body-small;
+    color: $text-muted;
+    font-size: $text-xs;
+    margin-top: $spacing-1;
+    display: block;
+
+    @include mobile-only {
+        margin-top: 0;
+    }
+}
+
+.activityLevel {
+    margin-bottom: $spacing-4;
+}
+
+.activityBadge {
+    font-size: $text-xs;
+}
+
+.recentActivity {
+    margin-bottom: $spacing-4;
+}
+
+.lastPost {
+    @include body-small;
+    color: $text-muted;
+    font-style: italic;
+}
+
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-2;
+    margin-bottom: $spacing-4;
+}
+
+.categoryTag {
+    font-size: $text-xs;
+    padding: $spacing-1 $spacing-2;
+}
+
+.moreCategories {
+    @include body-small;
+    color: $text-muted;
+    font-size: $text-xs;
+    align-self: center;
+}
+
+.groupActions {
+    padding: $spacing-4;
+    border-top: 1px solid $border-light;
+    background-color: $bg-secondary;
+}
+
+.memberActions {
+    display: flex;
+    gap: $spacing-2;
+
+    @include mobile-only {
+        flex-direction: column;
+    }
+}
+
+.actionButton {
+    flex: 1;
+
+    @include mobile-only {
+        width: 100%;
+    }
+}
+
+.leaveButton {
+    flex: none;
+    min-width: 80px;
+
+    @include mobile-only {
+        width: 100%;
+    }
+}
+
+.memberPreview {
+    padding: $spacing-3 $spacing-4;
+    border-top: 1px solid $border-light;
+}
+
+.memberAvatars {
+    display: flex;
+    align-items: center;
+    gap: -$spacing-2;
+}
+
+.memberAvatar {
+    position: relative;
+    border-radius: $radius-full;
+    border: 2px solid $surface-primary;
+}
+
+.memberAvatarImg {
+    width: 32px;
+    height: 32px;
+    border-radius: $radius-full;
+}
+
+.moreMembers {
+    background-color: $gray-200;
+    color: $text-secondary;
+    border: 2px solid $surface-primary;
+    border-radius: $radius-full;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $text-xs;
+    font-weight: $font-medium;
+    margin-left: $spacing-2;
+}
+
+// Card states
+.groupCard[data-featured="true"] {
+    border-color: $primary-300;
+    box-shadow: 0 0 0 1px $primary-200, $shadow-md;
+
+    .groupHeader {
+        background: linear-gradient(135deg, $primary-200, $primary-300);
+    }
+}
+
+.groupCard[data-new="true"] {
+    position: relative;
+
+    &::before {
+        content: "New";
+        position: absolute;
+        top: $spacing-2;
+        left: $spacing-2;
+        background-color: $success-500;
+        color: $white;
+        padding: $spacing-1 $spacing-2;
+        border-radius: $radius-sm;
+        font-size: $text-xs;
+        font-weight: $font-medium;
+        z-index: 10;
+    }
+}
+
+// Animation variants
+@keyframes cardSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.groupCard {
+    animation: cardSlideIn 0.5s ease-out;
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+    .groupCard {
+        background-color: $gray-800;
+        border-color: $gray-700;
+
+        &:hover {
+            border-color: $gray-600;
+        }
+    }
+
+    .groupHeader {
+        background: linear-gradient(135deg, $gray-700, $gray-600);
+    }
+
+    .privacyBadge {
+        background-color: rgba($gray-800, 0.9);
+    }
+
+    .groupStats {
+        background-color: $gray-700;
+        border-color: $gray-600;
+    }
+
+    .groupActions,
+    .memberPreview {
+        background-color: $gray-700;
+        border-top-color: $gray-600;
+    }
+
+    .moreMembers {
+        background-color: $gray-600;
+        border-color: $gray-800;
+    }
+
+    .memberAvatar {
+        border-color: $gray-800;
+    }
+
+    .avatar {
+        border-color: $gray-800;
+    }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+    .groupCard {
+        border: 2px solid $text-primary;
+
+        &:hover {
+            background-color: $text-primary;
+            color: $surface-primary;
+        }
+    }
+
+    .groupActions,
+    .memberPreview {
+        border-top: 2px solid $text-primary;
+    }
+
+    .groupStats {
+        border: 2px solid $text-primary;
+    }
+}
+
+// Print styles
+@media print {
+    .groupCard {
+        box-shadow: none;
+        border: 1px solid $gray-300;
+        page-break-inside: avoid;
+        margin-bottom: $spacing-4;
+    }
+
+    .groupActions {
+        display: none;
+    }
+
+    .groupHeader {
+        height: auto;
+        min-height: 60px;
+        background: $gray-100 !important;
+    }
+
+    .coverImage {
+        display: none;
+    }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+    .groupCard {
+        animation: none;
+        transition: none;
+
+        &:hover {
+            transform: none;
+        }
+    }
+
+    .coverImage img {
+        transition: none;
+    }
+
+    .groupCard:hover .coverImage img {
+        transform: none;
+    }
+}
+
+// Loading state
+.groupCard[data-loading="true"] {
+    opacity: 0.7;
+    pointer-events: none;
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba($primary-500, 0.1),
+            transparent
+        );
+        animation: shimmer 1.5s infinite;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+// Skeleton loading state
+.groupCard[data-skeleton="true"] {
+    .groupName,
+    .groupDescription,
+    .statValue,
+    .statLabel {
+        background-color: $gray-200;
+        color: transparent;
+        border-radius: $radius-sm;
+        animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .groupName {
+        height: 24px;
+        width: 80%;
+    }
+
+    .groupDescription {
+        height: 60px;
+        width: 100%;
+    }
+
+    .statValue {
+        height: 20px;
+        width: 40px;
+    }
+
+    .statLabel {
+        height: 14px;
+        width: 60px;
+    }
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+// Mobile-specific optimizations
+@include mobile-only {
+    .groupCard {
+        margin-bottom: $spacing-4;
+    }
+
+    .memberAvatars {
+        justify-content: center;
+    }
+
+    .categories {
+        justify-content: center;
+    }
+
+    .groupStats {
+        margin-bottom: $spacing-3;
+    }
+}
+
+// Tablet optimizations
+@include tablet-only {
+    .groupCard {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+}
+
+// Desktop optimizations
+@include desktop-up {
+    .groupCard {
+        max-width: 350px;
+    }
+
+    .memberActions {
+        flex-direction: row;
+    }
+}
+
+// Focus states for accessibility
+.groupCard:focus-within {
+    outline: 2px solid $primary-500;
+    outline-offset: 2px;
+}
+
+.groupName:focus {
+    outline: 2px solid $primary-500;
+    outline-offset: 2px;
+    border-radius: $radius-sm;
+}
+
+.actionButton:focus-visible,
+.leaveButton:focus-visible {
+    outline: 2px solid $primary-500;
+    outline-offset: 2px;
+}
+
+// Grid layout support
+.groupCard[data-layout="grid"] {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .groupInfo {
+        flex: 1;
+    }
+
+    .groupActions {
+        margin-top: auto;
+    }
+}
+
+// List layout support
+.groupCard[data-layout="list"] {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    max-width: none;
+
+    .groupHeader {
+        width: 200px;
+        height: auto;
+        min-height: 160px;
+        flex-shrink: 0;
+    }
+
+    .groupAvatar {
+        margin-bottom: 0;
+        position: absolute;
+        bottom: $spacing-3;
+        right: $spacing-3;
+    }
+
+    .groupInfo {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .groupActions {
+        border-top: none;
+        border-left: 1px solid $border-light;
+        width: 200px;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    @include mobile-only {
+        flex-direction: column;
+
+        .groupHeader {
+            width: 100%;
+            height: 120px;
+        }
+
+        .groupActions {
+            width: 100%;
+            border-left: none;
+            border-top: 1px solid $border-light;
+        }
+    }
+}

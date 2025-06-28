@@ -1,0 +1,143 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.followButton {
+    display: inline-block;
+    position: relative;
+}
+
+.button {
+    position: relative;
+    overflow: hidden;
+    transition: all $transition-base;
+    min-width: 100px;
+
+    &.following {
+        &:hover {
+            .buttonText {
+                opacity: 0;
+                transform: translateY(-100%);
+            }
+
+            .hoverText {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    }
+
+    &.notFollowing {
+        .hoverText {
+            display: none;
+        }
+    }
+}
+
+.buttonText {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-2;
+    transition: all $transition-base;
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.hoverText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateY(100%);
+    opacity: 0;
+    transition: all $transition-base;
+    color: $error-600;
+    font-weight: $font-medium;
+    white-space: nowrap;
+}
+
+// Special styling for following state
+.button.following {
+    &:hover {
+        background-color: $error-50 !important;
+        border-color: $error-200 !important;
+        color: $error-600 !important;
+    }
+}
+
+// Loading state
+.button[aria-disabled="true"] {
+    cursor: not-allowed;
+
+    .buttonText {
+        opacity: 0.7;
+    }
+}
+
+// Size variants
+.button {
+    &.sm {
+        min-width: 80px;
+    }
+
+    &.md {
+        min-width: 100px;
+    }
+
+    &.lg {
+        min-width: 120px;
+    }
+}
+
+// Animation for count changes
+@keyframes countChange {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.buttonText {
+    animation: countChange 0.3s ease-out;
+}
+
+// Focus states for accessibility
+.button:focus-visible {
+    outline: 2px solid $primary-500;
+    outline-offset: 2px;
+}
+
+// Mobile optimizations
+@include mobile-only {
+    .button {
+        min-width: auto;
+
+        &.sm {
+            min-width: 70px;
+        }
+
+        &.md {
+            min-width: 90px;
+        }
+
+        &.lg {
+            min-width: 110px;
+        }
+    }
+}
+
+// Dark mode preparation
+@media (prefers-color-scheme: dark) {
+    .hoverText {
+        color: $error-400;
+    }
+
+    .button.following:hover {
+        background-color: rgba($error-500, 0.1) !important;
+        border-color: $error-400 !important;
+        color: $error-400 !important;
+    }
+}
