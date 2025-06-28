@@ -1,7 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import AppLayout from "../layouts/AppLayout/AppLayout";
 import AuthLayout from "../layouts/AuthLayout/AuthLayout";
-import { BrowserRouter } from "react-router-dom";
 
 // Pages
 import Home from "../pages/Home/Home";
@@ -14,90 +13,70 @@ import MyPosts from "../pages/MyPosts/MyPosts";
 import WritePost from "../pages/WritePost/WritePost";
 import Bookmarks from "../pages/Bookmarks/Bookmarks";
 import Settings from "../pages/Settings/Settings";
-import Followers from "../pages/Followers/Followers";
-import Following from "../pages/Following/Following";
-import LikedPosts from "../pages/LikedPosts/LikedPosts";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "../pages/ResetPassword/ResetPassword";
 import NotFound from "../pages/NotFound/NotFound";
-import Notifications from "../pages/Notifications/Notifications";
-import Messages from "../pages/Messages/Messages";
-import Groups from "../pages/Groups/Groups";
-import Analytics from "../pages/Analytics/Analytics";
-import Search from "../pages/Search/Search";
-import Activity from "../pages/Activity/Activity";
 
 const AppRoutes = () => {
     return (
-        <BrowserRouter>
-            <Routes>
-                {/* App Layout Routes */}
-                <Route path="/" element={<AppLayout />}>
-                    <Route index element={<Home />} />
-                    <Route path="topics" element={<TopicsListing />} />
-                    <Route path="topics/:slug" element={<Topic />} />
-                    <Route path="blog/:slug" element={<BlogDetail />} />
-                    <Route path="profile/:username" element={<Profile />} />
-                    <Route
-                        path="profile/:username/edit"
-                        element={<EditProfile />}
-                    />
-                    <Route path="my-posts" element={<MyPosts />} />
-                    <Route path="write" element={<WritePost />} />
-                    <Route path="write/:slug" element={<WritePost />} />
-                    <Route path="bookmarks" element={<Bookmarks />} />
-                    <Route path="settings" element={<Settings />} />
-                    <Route path="followers/:username" element={<Followers />} />
-                    <Route path="following/:username" element={<Following />} />
-                    <Route path="liked-posts" element={<LikedPosts />} />
-                    <Route path="notifications" element={<Notifications />} />
-                    <Route path="messages" element={<Messages />} />
-                    <Route path="groups" element={<Groups />} />
-                    <Route path="analytics" element={<Analytics />} />
-                    <Route path="search" element={<Search />} />
-                    <Route path="activity" element={<Activity />} />
-                </Route>
+        <Routes>
+            {/* App Layout Routes */}
+            <Route path="/" element={<AppLayout />}>
+                <Route index element={<Home />} />
+                <Route path="topics" element={<TopicsListing />} />
+                <Route path="topics/:slug" element={<Topic />} />
+                <Route path="blog/:slug" element={<BlogDetail />} />
+                <Route path="profile/:username" element={<Profile />} />
+                <Route
+                    path="profile/:username/edit"
+                    element={<EditProfile />}
+                />
+                <Route path="my-posts" element={<MyPosts />} />
+                <Route path="write" element={<WritePost />} />
+                <Route path="write/:slug" element={<WritePost />} />
+                <Route path="bookmarks" element={<Bookmarks />} />
+                <Route path="settings" element={<Settings />} />
+            </Route>
 
-                {/* Auth Routes */}
-                <Route
-                    path="/login"
-                    element={
-                        <AuthLayout>
-                            <Login />
-                        </AuthLayout>
-                    }
-                />
-                <Route
-                    path="/register"
-                    element={
-                        <AuthLayout>
-                            <Register />
-                        </AuthLayout>
-                    }
-                />
-                <Route
-                    path="/forgot-password"
-                    element={
-                        <AuthLayout>
-                            <ForgotPassword />
-                        </AuthLayout>
-                    }
-                />
-                <Route
-                    path="/reset-password"
-                    element={
-                        <AuthLayout>
-                            <ResetPassword />
-                        </AuthLayout>
-                    }
-                />
+            {/* Auth Routes */}
+            <Route
+                path="/login"
+                element={
+                    <AuthLayout>
+                        <Login />
+                    </AuthLayout>
+                }
+            />
+            <Route
+                path="/register"
+                element={
+                    <AuthLayout>
+                        <Register />
+                    </AuthLayout>
+                }
+            />
+            <Route
+                path="/forgot-password"
+                element={
+                    <AuthLayout>
+                        <ForgotPassword />
+                    </AuthLayout>
+                }
+            />
+            <Route
+                path="/reset-password"
+                element={
+                    <AuthLayout>
+                        <ResetPassword />
+                    </AuthLayout>
+                }
+            />
 
-                {/* 404 Route */}
-                <Route path="*" element={<NotFound />} />
-            </Routes>
-        </BrowserRouter>
+            {/* 404 Route */}
+            <Route path="*" element={<NotFound />} />
+        </Routes>
     );
 };
 
