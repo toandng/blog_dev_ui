@@ -101,6 +101,13 @@
     &.loading {
         cursor: wait;
         pointer-events: none;
+        position: relative;
+
+        // Maintain button dimensions when loading
+        .hiddenText {
+            opacity: 0;
+            // Keep text for layout but hide it
+        }
     }
 
     &.fullWidth {
@@ -109,16 +116,30 @@
 }
 
 .spinner {
-    @include loading-spinner;
     position: absolute;
-    left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    left: 50%;
     width: 16px;
     height: 16px;
-    border-width: 2px;
+    margin-top: -8px; // Half of height
+    margin-left: -8px; // Half of width
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
 }
 
 .hiddenText {
-    opacity: 0;
+    // Text is invisible but maintains layout
+    color: transparent !important;
+    user-select: none;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }

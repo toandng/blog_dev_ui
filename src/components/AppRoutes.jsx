@@ -8,6 +8,7 @@ import Topic from "../pages/Topic/Topic";
 import TopicsListing from "../pages/TopicsListing/TopicsListing";
 import BlogDetail from "../pages/BlogDetail/BlogDetail";
 import Profile from "../pages/Profile/Profile";
+import EditProfile from "../pages/EditProfile/EditProfile";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
@@ -24,6 +25,10 @@ const AppRoutes = () => {
                 <Route path="topics/:slug" element={<Topic />} />
                 <Route path="blog/:slug" element={<BlogDetail />} />
                 <Route path="profile/:username" element={<Profile />} />
+                <Route
+                    path="profile/:username/edit"
+                    element={<EditProfile />}
+                />
             </Route>
 
             {/* Auth Routes */}

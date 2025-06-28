@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import AuthorInfo from "../../components/AuthorInfo/AuthorInfo";
 import PostList from "../../components/PostList/PostList";
 import Button from "../../components/Button/Button";
@@ -7,10 +7,12 @@ import Badge from "../../components/Badge/Badge";
 import EmptyState from "../../components/EmptyState/EmptyState";
 import Loading from "../../components/Loading/Loading";
 import FallbackImage from "../../components/FallbackImage/FallbackImage";
+
 import styles from "./Profile.module.scss";
 
 const Profile = () => {
     const { username } = useParams();
+    const navigate = useNavigate();
     const [profile, setProfile] = useState(null);
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -18,6 +20,11 @@ const Profile = () => {
     const [activeTab, setActiveTab] = useState("posts");
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+
+    // Check if this is the user's own profile
+    // In a real app, you'd get current user from auth context
+    const currentUser = "sonngoc"; // Mock current user
+    const isOwnProfile = currentUser === username;
 
     // Mock profile data - trong thực tế sẽ fetch từ API
     const mockProfile = {
@@ -172,34 +179,54 @@ const Profile = () => {
                     <div className={styles.coverOverlay}></div>
                 </div>
 
-                <div className="container">
-                    <div className={styles.profileHeader}>
-                        <div className={styles.avatarSection}>
-                            <FallbackImage
-                                src={profile.avatar}
-                                alt={profile.name}
-                                className={styles.avatar}
-                            />
-                            <div className={styles.basicInfo}>
-                                <h1 className={styles.name}>{profile.name}</h1>
-                                <p className={styles.username}>
-                                    @{profile.username}
-                                </p>
-                                {profile.title && (
-                                    <p className={styles.title}>
-                                        {profile.title}
+                <div className={styles.profileHeader}>
+                    <div className="container">
+                        <div className={styles.headerContent}>
+                            <div className={styles.avatarSection}>
+                                <FallbackImage
+                                    src={profile.avatar}
+                                    alt={profile.name}
+                                    className={styles.avatar}
+                                />
+                                <div className={styles.basicInfo}>
+                                    <h1 className={styles.name}>
+                                        {profile.name}
+                                    </h1>
+                                    <p className={styles.username}>
+                                        @{profile.username}
                                     </p>
+                                    {profile.title && (
+                                        <p className={styles.title}>
+                                            {profile.title}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className={styles.actions}>
+                                {isOwnProfile ? (
+                                    <Button
+                                        variant="secondary"
+                                        size="md"
+                                        onClick={() =>
+                                            navigate(
+                                                `/profile/${username}/edit`
+                                            )
+                                        }
+                                    >
+                                        Edit Profile
+                                    </Button>
+                                ) : (
+                                    <>
+                                        <Button variant="primary" size="md">
+                                            Follow
+                                        </Button>
+                                        <Button variant="ghost" size="md">
+                                            Message
+                                        </Button>
+                                    </>
                                 )}
                             </div>
-                        </div>
-
-                        <div className={styles.actions}>
-                            <Button variant="primary" size="md">
-                                Follow
-                            </Button>
-                            <Button variant="ghost" size="md">
-                                Message
-                            </Button>
                         </div>
                     </div>
                 </div>
