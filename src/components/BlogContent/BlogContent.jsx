@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import Badge from "../Badge/Badge";
 import FallbackImage from "../FallbackImage/FallbackImage";
 import styles from "./BlogContent.module.scss";
@@ -89,9 +90,17 @@ const BlogContent = ({
                             />
                         )}
                         <div className={styles.authorInfo}>
-                            <span className={styles.authorName}>
+                            <Link
+                                to={`/profile/${
+                                    author?.username ||
+                                    author?.name
+                                        ?.toLowerCase()
+                                        .replace(/\s+/g, "-")
+                                }`}
+                                className={styles.authorName}
+                            >
                                 {author?.name}
-                            </span>
+                            </Link>
                             <div className={styles.dateInfo}>
                                 <time
                                     dateTime={publishedAt}
@@ -156,6 +165,7 @@ BlogContent.propTypes = {
     author: PropTypes.shape({
         name: PropTypes.string.isRequired,
         avatar: PropTypes.string,
+        username: PropTypes.string,
     }).isRequired,
     publishedAt: PropTypes.string.isRequired,
     updatedAt: PropTypes.string,

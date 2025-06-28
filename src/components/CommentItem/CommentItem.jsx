@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import Button from "../Button/Button";
 import FallbackImage from "../FallbackImage/FallbackImage";
 import styles from "./CommentItem.module.scss";
@@ -82,9 +83,17 @@ const CommentItem = ({
                     {/* Header */}
                     <div className={styles.header}>
                         <div className={styles.info}>
-                            <span className={styles.authorName}>
+                            <Link
+                                to={`/profile/${
+                                    author?.username ||
+                                    author?.name
+                                        ?.toLowerCase()
+                                        .replace(/\s+/g, "-")
+                                }`}
+                                className={styles.authorName}
+                            >
                                 {author.name}
-                            </span>
+                            </Link>
                             <time className={styles.date} dateTime={createdAt}>
                                 {formatDate(createdAt)}
                             </time>
@@ -222,6 +231,7 @@ CommentItem.propTypes = {
         author: PropTypes.shape({
             name: PropTypes.string.isRequired,
             avatar: PropTypes.string.isRequired,
+            username: PropTypes.string,
         }).isRequired,
         content: PropTypes.string.isRequired,
         createdAt: PropTypes.string.isRequired,

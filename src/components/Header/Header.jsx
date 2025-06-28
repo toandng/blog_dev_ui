@@ -16,6 +16,7 @@ const Header = () => {
     // Mock user data
     const mockUser = {
         name: "John Doe",
+        username: "john-doe",
         email: "john.doe@example.com",
         avatar: "https://via.placeholder.com/40?text=JD",
         role: "Author",
@@ -157,7 +158,9 @@ const Header = () => {
                                         </div>
                                         <nav className={styles.dropdownNav}>
                                             <Link
-                                                to="/profile"
+                                                to={`/profile/${
+                                                    user?.username || "john-doe"
+                                                }`}
                                                 className={styles.dropdownItem}
                                             >
                                                 <svg
@@ -358,7 +361,9 @@ const Header = () => {
                                 </div>
                                 <nav className={styles.mobileUserNav}>
                                     <Link
-                                        to="/profile"
+                                        to={`/profile/${
+                                            user?.username || "john-doe"
+                                        }`}
                                         onClick={() =>
                                             setIsMobileMenuOpen(false)
                                         }

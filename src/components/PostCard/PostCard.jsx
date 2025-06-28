@@ -101,9 +101,15 @@ const PostCard = ({
                                 className={styles.authorAvatar}
                             />
                         )}
-                        <span className={styles.authorName}>
+                        <Link
+                            to={`/profile/${
+                                author?.username ||
+                                author?.name?.toLowerCase().replace(/\s+/g, "-")
+                            }`}
+                            className={styles.authorName}
+                        >
                             {author?.name}
-                        </span>
+                        </Link>
                     </div>
 
                     <div className={styles.metaInfo}>
@@ -131,6 +137,7 @@ PostCard.propTypes = {
     author: PropTypes.shape({
         name: PropTypes.string.isRequired,
         avatar: PropTypes.string,
+        username: PropTypes.string,
     }).isRequired,
     publishedAt: PropTypes.string.isRequired,
     readTime: PropTypes.number,

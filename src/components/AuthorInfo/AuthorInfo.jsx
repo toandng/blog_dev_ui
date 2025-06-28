@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import Button from "../Button/Button";
 import FallbackImage from "../FallbackImage/FallbackImage";
 import styles from "./AuthorInfo.module.scss";
@@ -57,7 +58,17 @@ const AuthorInfo = ({
                     />
                 </div>
                 <div className={styles.info}>
-                    <h3 className={styles.name}>{name}</h3>
+                    <h3 className={styles.name}>
+                        <Link
+                            to={`/profile/${
+                                author?.username ||
+                                name?.toLowerCase().replace(/\s+/g, "-")
+                            }`}
+                            className={styles.nameLink}
+                        >
+                            {name}
+                        </Link>
+                    </h3>
                     {title && <p className={styles.title}>{title}</p>}
 
                     {/* Stats */}
@@ -181,6 +192,7 @@ const AuthorInfo = ({
 AuthorInfo.propTypes = {
     author: PropTypes.shape({
         name: PropTypes.string.isRequired,
+        username: PropTypes.string,
         title: PropTypes.string,
         bio: PropTypes.string,
         avatar: PropTypes.string.isRequired,

@@ -60,6 +60,17 @@
     }
 }
 
+.nameLink {
+    color: inherit;
+    text-decoration: none;
+    transition: color $transition-base;
+
+    &:hover {
+        color: $primary-600;
+        text-decoration: none;
+    }
+}
+
 .title {
     @include body-base;
     color: $primary-600;
