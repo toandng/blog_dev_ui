@@ -2,27 +2,29 @@
 @use "../../styles/mixins" as *;
 
 .container {
-    min-height: 100vh;
+    height: 100%;
     background-color: #f9fafb;
-    padding: $spacing-4;
+    padding: $spacing-3;
 
     @include tablet-up {
-        padding: $spacing-6;
+        padding: $spacing-4;
+    }
+
+    @include mobile-only {
+        padding: $spacing-2;
     }
 }
 
 .layout {
     display: flex;
-    height: calc(100vh - #{$spacing-8});
-    max-width: 1200px;
-    margin: 0 auto;
+    height: 100%;
     background-color: $bg-primary;
     border-radius: $radius-lg;
     box-shadow: $shadow-lg;
     overflow: hidden;
 
-    @include tablet-up {
-        height: calc(100vh - #{$spacing-12});
+    @include mobile-only {
+        border-radius: $radius-md;
     }
 }
 
@@ -30,14 +32,30 @@
 .sidebar {
     width: 100%;
     min-width: 280px;
-    max-width: 320px;
+    max-width: 350px;
     background-color: $surface-primary;
     border-right: 1px solid $border-light;
     display: flex;
     flex-direction: column;
 
+    @include tablet-down {
+        min-width: 260px;
+        max-width: 300px;
+    }
+
     @include mobile-only {
-        display: none;
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        z-index: 10;
+        transform: translateX(-100%);
+        transition: transform $transition-base;
+        box-shadow: $shadow-lg;
+
+        &.visible {
+            transform: translateX(0);
+        }
     }
 }
 

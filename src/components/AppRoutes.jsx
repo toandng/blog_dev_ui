@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import AppLayout from "../layouts/AppLayout/AppLayout";
+import FullscreenLayout from "../layouts/FullscreenLayout/FullscreenLayout";
 import AuthLayout from "../layouts/AuthLayout/AuthLayout";
 import Loading from "./Loading/Loading";
 import ErrorBoundary from "./ErrorBoundary/ErrorBoundary";
@@ -48,11 +49,15 @@ const AppRoutes = () => {
                             element={<EditProfile />}
                         />
                         <Route path="my-posts" element={<MyPosts />} />
+                        <Route path="bookmarks" element={<Bookmarks />} />
+                        <Route path="settings" element={<Settings />} />
+                    </Route>
+
+                    {/* Fullscreen Layout Routes */}
+                    <Route path="/" element={<FullscreenLayout />}>
                         <Route path="write" element={<WritePost />} />
                         <Route path="write/:slug" element={<WritePost />} />
-                        <Route path="bookmarks" element={<Bookmarks />} />
                         <Route path="messages" element={<DirectMessages />} />
-                        <Route path="settings" element={<Settings />} />
                     </Route>
 
                     {/* Auth Routes */}

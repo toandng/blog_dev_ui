@@ -2,28 +2,38 @@
 @use "../../styles/mixins" as *;
 
 .container {
-    min-height: 100vh;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     background-color: $bg-secondary;
-    padding: $spacing-6 0;
+    padding: $spacing-4;
+    gap: $spacing-4;
 
     @include tablet-down {
-        padding: $spacing-4 0;
+        padding: $spacing-3;
+        gap: $spacing-3;
+    }
+
+    @include mobile-only {
+        padding: $spacing-2;
+        gap: $spacing-2;
     }
 }
 
-.header {
+.footer {
     @include flex-between;
-    margin-bottom: $spacing-6;
+    flex-shrink: 0;
     gap: $spacing-6;
     background-color: $surface-primary;
-    padding: $spacing-6;
+    padding: $spacing-5;
     border-radius: $radius-lg;
     box-shadow: $shadow-sm;
     border: 1px solid $border-light;
+    margin-top: 1rem;
 
-    // Sticky positioning
+    // Sticky positioning at bottom
     position: sticky;
-    top: 0;
+    bottom: $spacing-4;
     z-index: 100;
     transition: all $transition-base;
 
@@ -40,13 +50,17 @@
         gap: $spacing-4;
         padding: $spacing-4;
         border-radius: $radius-md;
+        bottom: $spacing-3;
+    }
 
-        // Adjust top position for mobile to account for mobile browsers
-        top: 0;
+    @include mobile-only {
+        padding: $spacing-3;
+        gap: $spacing-3;
+        bottom: $spacing-2;
     }
 }
 
-.headerContent {
+.footerContent {
     flex: 1;
 
     .title {
@@ -127,22 +141,30 @@
 }
 
 .content {
-    min-height: 70vh;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .editor {
+    flex: 1;
     background-color: $surface-primary;
     border-radius: $radius-lg;
     box-shadow: $shadow-sm;
     border: 1px solid $border-light;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .form {
-    padding: $spacing-8;
+    flex: 1;
+    overflow-y: auto;
+    padding: $spacing-6;
 
     @include tablet-down {
-        padding: $spacing-6;
+        padding: $spacing-5;
     }
 
     @include mobile-only {
@@ -418,18 +440,23 @@
 
 // Preview mode
 .preview {
+    flex: 1;
     background-color: $surface-primary;
     border-radius: $radius-lg;
     box-shadow: $shadow-sm;
     border: 1px solid $border-light;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .previewContent {
-    padding: $spacing-8;
+    flex: 1;
+    overflow-y: auto;
+    padding: $spacing-6;
 
     @include tablet-down {
-        padding: $spacing-6;
+        padding: $spacing-5;
     }
 
     @include mobile-only {
