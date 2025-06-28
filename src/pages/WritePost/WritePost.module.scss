@@ -1,0 +1,555 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.container {
+    min-height: 100vh;
+    background-color: $bg-secondary;
+    padding: $spacing-6 0;
+
+    @include tablet-down {
+        padding: $spacing-4 0;
+    }
+}
+
+.header {
+    @include flex-between;
+    margin-bottom: $spacing-6;
+    gap: $spacing-6;
+    background-color: $surface-primary;
+    padding: $spacing-6;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-sm;
+    border: 1px solid $border-light;
+
+    @include tablet-down {
+        @include flex-column;
+        align-items: stretch;
+        gap: $spacing-4;
+        padding: $spacing-4;
+    }
+}
+
+.headerContent {
+    flex: 1;
+
+    .title {
+        @include heading-2;
+        color: $text-primary;
+        margin-bottom: $spacing-2;
+    }
+
+    .stats {
+        display: flex;
+        gap: $spacing-3;
+        color: $text-muted;
+        font-size: $text-sm;
+
+        span {
+            &:not(:last-child)::after {
+                content: "•";
+                margin-left: $spacing-3;
+                color: $text-muted;
+            }
+        }
+    }
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: $spacing-4;
+
+    @include tablet-down {
+        @include flex-column;
+        align-items: stretch;
+        gap: $spacing-3;
+    }
+}
+
+.viewToggle {
+    display: flex;
+    background-color: $bg-muted;
+    border-radius: $radius-md;
+    padding: 2px;
+    gap: 2px;
+}
+
+.toggleButton {
+    padding: $spacing-2 $spacing-4;
+    border: none;
+    background: none;
+    color: $text-secondary;
+    font-size: $text-sm;
+    font-weight: $font-medium;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    transition: all $transition-base;
+
+    &:hover {
+        color: $text-primary;
+    }
+
+    &.active {
+        background-color: $surface-primary;
+        color: $primary-600;
+        box-shadow: $shadow-sm;
+    }
+}
+
+.saveActions {
+    display: flex;
+    gap: $spacing-3;
+
+    @include tablet-down {
+        justify-content: stretch;
+
+        > * {
+            flex: 1;
+        }
+    }
+}
+
+.content {
+    min-height: 70vh;
+}
+
+.editor {
+    background-color: $surface-primary;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-sm;
+    border: 1px solid $border-light;
+    overflow: hidden;
+}
+
+.form {
+    padding: $spacing-8;
+
+    @include tablet-down {
+        padding: $spacing-6;
+    }
+
+    @include mobile-only {
+        padding: $spacing-4;
+    }
+}
+
+.label {
+    display: block;
+    font-weight: $font-semibold;
+    color: $text-primary;
+    margin-bottom: $spacing-2;
+    font-size: $text-sm;
+}
+
+// Image upload section
+.imageSection {
+    margin-bottom: $spacing-6;
+}
+
+.imagePreview {
+    position: relative;
+    border-radius: $radius-md;
+    overflow: hidden;
+    box-shadow: $shadow-base;
+}
+
+.coverImage {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+
+    @include tablet-up {
+        height: 300px;
+    }
+}
+
+.imageActions {
+    position: absolute;
+    top: $spacing-3;
+    right: $spacing-3;
+    display: flex;
+    gap: $spacing-2;
+    opacity: 0;
+    transition: opacity $transition-base;
+
+    .imagePreview:hover & {
+        opacity: 1;
+    }
+}
+
+.changeImageButton,
+.removeImageButton {
+    padding: $spacing-2 $spacing-3;
+    border: none;
+    border-radius: $radius-md;
+    font-size: $text-xs;
+    font-weight: $font-medium;
+    cursor: pointer;
+    transition: all $transition-base;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.changeImageButton {
+    background-color: $primary-600;
+    color: $text-white;
+
+    &:hover {
+        background-color: $primary-700;
+    }
+}
+
+.removeImageButton {
+    background-color: $error-600;
+    color: $text-white;
+
+    &:hover {
+        background-color: $error-700;
+    }
+}
+
+.uploadArea {
+    border: 2px dashed $border-medium;
+    border-radius: $radius-lg;
+    padding: $spacing-12;
+    text-align: center;
+    transition: all $transition-base;
+
+    &:hover {
+        border-color: $primary-400;
+        background-color: $primary-50;
+    }
+
+    @include tablet-down {
+        padding: $spacing-8;
+    }
+}
+
+.uploadButton {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-2;
+    padding: $spacing-3 $spacing-6;
+    background-color: $bg-secondary;
+    color: $text-primary;
+    border: 1px solid $border-medium;
+    border-radius: $radius-md;
+    font-weight: $font-medium;
+    cursor: pointer;
+    transition: all $transition-base;
+    text-decoration: none;
+
+    &:hover {
+        background-color: $primary-50;
+        border-color: $primary-300;
+        color: $primary-700;
+    }
+}
+
+.fileInput {
+    display: none;
+}
+
+// Topics section
+.topicsSection {
+    margin-bottom: $spacing-6;
+}
+
+.topicsInput {
+    position: relative;
+    margin-bottom: $spacing-3;
+}
+
+.topicInput {
+    width: 100%;
+    padding: $spacing-3;
+    border: 1px solid $border-medium;
+    border-radius: $radius-md;
+    font-size: $text-sm;
+    background-color: $bg-primary;
+    color: $text-primary;
+    transition: all $transition-base;
+
+    &::placeholder {
+        color: $text-muted;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: $primary-500;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+}
+
+.topicSuggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: $surface-primary;
+    border: 1px solid $border-light;
+    border-radius: $radius-md;
+    box-shadow: $shadow-lg;
+    z-index: $z-dropdown;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.suggestionItem {
+    width: 100%;
+    padding: $spacing-3;
+    border: none;
+    background: none;
+    text-align: left;
+    color: $text-primary;
+    cursor: pointer;
+    transition: background-color $transition-base;
+
+    &:hover {
+        background-color: $bg-secondary;
+    }
+
+    &:not(:last-child) {
+        border-bottom: 1px solid $border-light;
+    }
+}
+
+.selectedTopics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-2;
+}
+
+.topicBadge {
+    display: flex;
+    align-items: center;
+    gap: $spacing-1;
+}
+
+.removeTopic {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: $text-lg;
+    line-height: 1;
+    padding: 0;
+    margin-left: $spacing-1;
+    opacity: 0.7;
+    transition: opacity $transition-base;
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+// Content section
+.contentSection {
+    margin-bottom: $spacing-6;
+}
+
+.contentTextarea {
+    width: 100%;
+    min-height: 500px;
+    padding: $spacing-4;
+    border: 1px solid $border-medium;
+    border-radius: $radius-md;
+    font-family: $font-mono;
+    font-size: $text-sm;
+    line-height: $leading-relaxed;
+    background-color: $bg-primary;
+    color: $text-primary;
+    resize: vertical;
+    transition: all $transition-base;
+
+    &::placeholder {
+        color: $text-muted;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: $primary-500;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    &.error {
+        border-color: $error-500;
+    }
+
+    @include tablet-down {
+        min-height: 400px;
+        font-size: $text-xs;
+    }
+}
+
+.errorText {
+    color: $error-600;
+    font-size: $text-sm;
+    margin-top: $spacing-1;
+}
+
+// Preview mode
+.preview {
+    background-color: $surface-primary;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-sm;
+    border: 1px solid $border-light;
+    overflow: hidden;
+}
+
+.previewContent {
+    padding: $spacing-8;
+
+    @include tablet-down {
+        padding: $spacing-6;
+    }
+
+    @include mobile-only {
+        padding: $spacing-4;
+    }
+}
+
+.previewHeader {
+    margin-bottom: $spacing-8;
+    padding-bottom: $spacing-6;
+    border-bottom: 1px solid $border-light;
+}
+
+.previewCoverImage {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: $radius-md;
+    margin-bottom: $spacing-6;
+
+    @include tablet-up {
+        height: 350px;
+    }
+}
+
+.previewTitle {
+    @include heading-1;
+    color: $text-primary;
+    margin-bottom: $spacing-4;
+}
+
+.previewExcerpt {
+    @include body-large;
+    color: $text-secondary;
+    margin-bottom: $spacing-4;
+}
+
+.previewTopics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-2;
+    margin-bottom: $spacing-4;
+}
+
+.previewBody {
+    line-height: $leading-relaxed;
+}
+
+.previewText {
+    font-family: $font-sans;
+    font-size: $text-base;
+    color: $text-primary;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin: 0;
+}
+
+// Loading state
+.loading {
+    @include flex-center;
+    @include flex-column;
+    gap: $spacing-4;
+    padding: $spacing-12;
+    background-color: $surface-primary;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-sm;
+    border: 1px solid $border-light;
+
+    p {
+        color: $text-secondary;
+        font-size: $text-sm;
+    }
+}
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid $border-light;
+    border-top: 3px solid $primary-500;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+// Form spacing
+.form > * {
+    margin-bottom: $spacing-6;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+// Responsive adjustments
+@include mobile-only {
+    .header {
+        margin-bottom: $spacing-4;
+    }
+
+    .actions {
+        gap: $spacing-2;
+    }
+
+    .saveActions {
+        flex-direction: column;
+        gap: $spacing-2;
+    }
+
+    .viewToggle {
+        width: 100%;
+
+        .toggleButton {
+            flex: 1;
+            text-align: center;
+        }
+    }
+}
+
+// Focus states for accessibility
+.toggleButton:focus-visible,
+.uploadButton:focus-visible,
+.suggestionItem:focus-visible,
+.removeTopic:focus-visible {
+    outline: 2px solid $primary-500;
+    outline-offset: 2px;
+}
+
+// Animation for topic suggestions
+.topicSuggestions {
+    animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

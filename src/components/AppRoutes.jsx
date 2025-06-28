@@ -9,6 +9,9 @@ import TopicsListing from "../pages/TopicsListing/TopicsListing";
 import BlogDetail from "../pages/BlogDetail/BlogDetail";
 import Profile from "../pages/Profile/Profile";
 import EditProfile from "../pages/EditProfile/EditProfile";
+import MyPosts from "../pages/MyPosts/MyPosts";
+import WritePost from "../pages/WritePost/WritePost";
+import Bookmarks from "../pages/Bookmarks/Bookmarks";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
@@ -29,6 +32,10 @@ const AppRoutes = () => {
                     path="profile/:username/edit"
                     element={<EditProfile />}
                 />
+                <Route path="my-posts" element={<MyPosts />} />
+                <Route path="write" element={<WritePost />} />
+                <Route path="write/:slug" element={<WritePost />} />
+                <Route path="bookmarks" element={<Bookmarks />} />
             </Route>
 
             {/* Auth Routes */}
