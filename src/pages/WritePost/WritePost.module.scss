@@ -21,11 +21,28 @@
     box-shadow: $shadow-sm;
     border: 1px solid $border-light;
 
+    // Sticky positioning
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition: all $transition-base;
+
+    // Enhanced shadow when scrolled
+    &.scrolled {
+        box-shadow: $shadow-lg;
+        backdrop-filter: blur(8px);
+        background-color: rgba(255, 255, 255, 0.95);
+    }
+
     @include tablet-down {
         @include flex-column;
         align-items: stretch;
         gap: $spacing-4;
         padding: $spacing-4;
+        border-radius: $radius-md;
+
+        // Adjust top position for mobile to account for mobile browsers
+        top: 0;
     }
 }
 

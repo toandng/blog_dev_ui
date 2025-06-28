@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
@@ -27,6 +27,9 @@ const WritePost = () => {
     const [previewMode, setPreviewMode] = useState(false);
     const [selectedTopics, setSelectedTopics] = useState([]);
     const [topicInput, setTopicInput] = useState("");
+    const [isHeaderScrolled, setIsHeaderScrolled] = useState(false);
+
+    const headerRef = useRef(null);
 
     const availableTopics = [
         "React",
@@ -84,6 +87,20 @@ const WritePost = () => {
             setSelectedTopics(mockPost.topics);
         }
     }, [isEditing]);
+
+    // Sticky header scroll effect
+    useEffect(() => {
+        const handleScroll = () => {
+            if (headerRef.current) {
+                const headerRect = headerRef.current.getBoundingClientRect();
+                const isSticky = headerRect.top <= 0;
+                setIsHeaderScrolled(isSticky);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     const handleInputChange = (field) => (e) => {
         setFormData((prev) => ({
@@ -190,7 +207,12 @@ const WritePost = () => {
     return (
         <div className={styles.container}>
             <div className="container">
-                <div className={styles.header}>
+                <div
+                    ref={headerRef}
+                    className={`${styles.header} ${
+                        isHeaderScrolled ? styles.scrolled : ""
+                    }`}
+                >
                     <div className={styles.headerContent}>
                         <h1 className={styles.title}>
                             {isEditing ? "Edit Post" : "Write New Post"}
