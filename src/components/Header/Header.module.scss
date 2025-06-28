@@ -308,11 +308,8 @@
     // Logout button specific styles
     &.logout {
         color: $error-600;
-        margin-top: $spacing-2; // Visual separation from menu items
         border-top: 1px solid $border-light;
-        padding-top: calc(
-            $spacing-3 + $spacing-2
-        ); // Standard item padding + margin offset
+        padding: calc($spacing-3 + $spacing-2) $spacing-4;
 
         &:hover {
             background-color: $error-50;
