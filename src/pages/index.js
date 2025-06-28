@@ -20,3 +20,6 @@ export { default as ResetPassword } from "./ResetPassword/ResetPassword";
 export { default as NotFound } from "./NotFound/NotFound";
 export { default as Messages } from "./Messages/Messages";
 export { default as Groups } from "./Groups/Groups";
+export { default as Analytics } from "./Analytics/Analytics";
+export { default as Search } from "./Search/Search";
+export { default as Activity } from "./Activity/Activity";

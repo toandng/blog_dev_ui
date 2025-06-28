@@ -25,6 +25,9 @@ import NotFound from "../pages/NotFound/NotFound";
 import Notifications from "../pages/Notifications/Notifications";
 import Messages from "../pages/Messages/Messages";
 import Groups from "../pages/Groups/Groups";
+import Analytics from "../pages/Analytics/Analytics";
+import Search from "../pages/Search/Search";
+import Activity from "../pages/Activity/Activity";
 
 const AppRoutes = () => {
     return (
@@ -52,6 +55,9 @@ const AppRoutes = () => {
                     <Route path="notifications" element={<Notifications />} />
                     <Route path="messages" element={<Messages />} />
                     <Route path="groups" element={<Groups />} />
+                    <Route path="analytics" element={<Analytics />} />
+                    <Route path="search" element={<Search />} />
+                    <Route path="activity" element={<Activity />} />
                 </Route>
 
                 {/* Auth Routes */}

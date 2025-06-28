@@ -1,0 +1,535 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.activityTimeline {
+    width: 100%;
+    background-color: $surface-primary;
+    border: 1px solid $border-light;
+    border-radius: $radius-lg;
+    overflow: hidden;
+    box-shadow: $shadow-sm;
+}
+
+// Timeline header
+.timelineHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $spacing-4 $spacing-6;
+    border-bottom: 1px solid $border-light;
+    background-color: $bg-secondary;
+
+    h2 {
+        @include heading-lg;
+        margin: 0;
+        color: $text-primary;
+        font-size: $text-xl;
+    }
+
+    @include mobile-only {
+        flex-direction: column;
+        gap: $spacing-3;
+        padding: $spacing-3 $spacing-4;
+
+        h2 {
+            font-size: $text-lg;
+        }
+    }
+}
+
+.viewControls {
+    display: flex;
+    gap: $spacing-2;
+    align-items: center;
+
+    @include mobile-only {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+.viewButton {
+    @include button-base;
+    padding: $spacing-2 $spacing-4;
+    background-color: transparent;
+    border: 1px solid $border-light;
+    border-radius: $radius-md;
+    color: $text-secondary;
+    font-size: $text-sm;
+    font-weight: $font-medium;
+    transition: all $transition-base;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $bg-secondary;
+        color: $text-primary;
+        border-color: $primary-300;
+    }
+
+    &.active {
+        background-color: $primary-500;
+        color: $white;
+        border-color: $primary-500;
+    }
+
+    @include mobile-only {
+        padding: $spacing-1 $spacing-2;
+        font-size: $text-xs;
+    }
+}
+
+// Timeline content
+.timelineContent {
+    padding: $spacing-6;
+
+    @include mobile-only {
+        padding: $spacing-4;
+    }
+}
+
+// Timeline view
+.timelineView {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-6;
+}
+
+.timelineDay {
+    border-left: 3px solid $primary-200;
+    padding-left: $spacing-4;
+    position: relative;
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: -8px;
+        top: 8px;
+        width: 12px;
+        height: 12px;
+        background-color: $primary-500;
+        border-radius: $radius-full;
+        border: 3px solid $surface-primary;
+    }
+}
+
+.dayHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-3;
+
+    h3 {
+        @include heading-base;
+        margin: 0;
+        color: $text-primary;
+        font-size: $text-lg;
+    }
+
+    span {
+        @include body-small;
+        color: $text-muted;
+        font-size: $text-sm;
+    }
+
+    @include mobile-only {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: $spacing-1;
+
+        h3 {
+            font-size: $text-base;
+        }
+    }
+}
+
+.dayActivities {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-3;
+}
+
+.activityItem {
+    display: flex;
+    align-items: center;
+    gap: $spacing-4;
+    padding: $spacing-3;
+    background-color: $bg-secondary;
+    border-radius: $radius-md;
+    transition: all $transition-base;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $primary-50;
+        transform: translateY(-1px);
+        box-shadow: $shadow-sm;
+    }
+
+    @include mobile-only {
+        gap: $spacing-3;
+        padding: $spacing-2;
+    }
+}
+
+.activityTime {
+    @include body-small;
+    color: $text-muted;
+    font-size: $text-xs;
+    font-weight: $font-medium;
+    min-width: 60px;
+    text-align: center;
+}
+
+.activityIcon {
+    width: 32px;
+    height: 32px;
+    border-radius: $radius-full;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $text-sm;
+    color: $white;
+    flex-shrink: 0;
+
+    @include mobile-only {
+        width: 28px;
+        height: 28px;
+        font-size: $text-xs;
+    }
+}
+
+.activityContent {
+    flex: 1;
+    min-width: 0;
+}
+
+.activityDescription {
+    @include body-base;
+    color: $text-primary;
+    font-size: $text-sm;
+    font-weight: $font-medium;
+
+    @include mobile-only {
+        font-size: $text-xs;
+    }
+}
+
+// Calendar view
+.calendarView {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-4;
+
+    h3 {
+        @include heading-base;
+        margin: 0;
+        color: $text-primary;
+        text-align: center;
+    }
+}
+
+.calendarGrid {
+    display: grid;
+    grid-template-columns: repeat(53, 1fr);
+    gap: 2px;
+    max-width: 800px;
+    margin: 0 auto;
+
+    @include mobile-only {
+        grid-template-columns: repeat(26, 1fr);
+        max-width: 400px;
+    }
+}
+
+.calendarDay {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all $transition-base;
+
+    &:hover {
+        transform: scale(1.2);
+        border: 1px solid $primary-500;
+    }
+
+    &.level0 {
+        background-color: $gray-100;
+    }
+
+    &.level1 {
+        background-color: $primary-200;
+    }
+
+    &.level2 {
+        background-color: $primary-400;
+    }
+
+    &.level3 {
+        background-color: $primary-600;
+    }
+
+    &.level4 {
+        background-color: $primary-800;
+    }
+
+    @include mobile-only {
+        width: 10px;
+        height: 10px;
+    }
+}
+
+// Insights view
+.insightsView {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-6;
+}
+
+.insightsStats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: $spacing-4;
+
+    @include mobile-only {
+        grid-template-columns: repeat(2, 1fr);
+        gap: $spacing-3;
+    }
+}
+
+.statCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: $spacing-4;
+    background-color: $bg-secondary;
+    border-radius: $radius-lg;
+    border: 1px solid $border-light;
+    text-align: center;
+
+    @include mobile-only {
+        padding: $spacing-3;
+    }
+}
+
+.statValue {
+    @include heading-xl;
+    color: $primary-600;
+    font-size: $text-3xl;
+    font-weight: $font-bold;
+    margin-bottom: $spacing-1;
+
+    @include mobile-only {
+        font-size: $text-2xl;
+    }
+}
+
+.statLabel {
+    @include body-small;
+    color: $text-muted;
+    font-size: $text-sm;
+    font-weight: $font-medium;
+
+    @include mobile-only {
+        font-size: $text-xs;
+    }
+}
+
+.chartContainer {
+    background-color: $bg-secondary;
+    padding: $spacing-4;
+    border-radius: $radius-lg;
+    border: 1px solid $border-light;
+
+    h4 {
+        @include heading-base;
+        margin: 0 0 $spacing-3 0;
+        color: $text-primary;
+        text-align: center;
+    }
+
+    @include mobile-only {
+        padding: $spacing-3;
+    }
+}
+
+// Compact mode
+.activityTimeline.compact {
+    .timelineHeader {
+        padding: $spacing-3 $spacing-4;
+
+        h2 {
+            font-size: $text-lg;
+        }
+    }
+
+    .timelineContent {
+        padding: $spacing-4;
+    }
+
+    .timelineDay {
+        padding-left: $spacing-3;
+    }
+
+    .activityItem {
+        padding: $spacing-2;
+    }
+
+    .activityIcon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .statCard {
+        padding: $spacing-3;
+    }
+
+    .statValue {
+        font-size: $text-2xl;
+    }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+    .activityTimeline {
+        background-color: $gray-800;
+        border-color: $gray-700;
+    }
+
+    .timelineHeader {
+        background-color: $gray-700;
+        border-bottom-color: $gray-600;
+    }
+
+    .viewButton {
+        border-color: $gray-600;
+        color: $gray-300;
+
+        &:hover {
+            background-color: $gray-700;
+            color: $gray-100;
+            border-color: $primary-400;
+        }
+
+        &.active {
+            background-color: $primary-600;
+            border-color: $primary-600;
+        }
+    }
+
+    .timelineDay {
+        border-left-color: $primary-400;
+
+        &::before {
+            background-color: $primary-400;
+            border-color: $gray-800;
+        }
+    }
+
+    .activityItem {
+        background-color: $gray-700;
+
+        &:hover {
+            background-color: $primary-900;
+        }
+    }
+
+    .statCard,
+    .chartContainer {
+        background-color: $gray-700;
+        border-color: $gray-600;
+    }
+
+    .calendarDay {
+        &.level0 {
+            background-color: $gray-600;
+        }
+
+        &.level1 {
+            background-color: $primary-800;
+        }
+
+        &.level2 {
+            background-color: $primary-600;
+        }
+
+        &.level3 {
+            background-color: $primary-400;
+        }
+
+        &.level4 {
+            background-color: $primary-200;
+        }
+    }
+}
+
+// Animations
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.activityItem {
+    animation: fadeInUp 0.4s ease-out;
+}
+
+// Responsive adjustments
+@include tablet-only {
+    .calendarGrid {
+        grid-template-columns: repeat(40, 1fr);
+        max-width: 600px;
+    }
+
+    .calendarDay {
+        width: 11px;
+        height: 11px;
+    }
+}
+
+// Print styles
+@media print {
+    .activityTimeline {
+        box-shadow: none;
+        page-break-inside: avoid;
+    }
+
+    .timelineHeader {
+        background-color: transparent;
+    }
+
+    .viewControls {
+        display: none;
+    }
+
+    .activityItem {
+        &:hover {
+            background-color: transparent;
+            transform: none;
+        }
+    }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+    .activityItem {
+        animation: none;
+        transition: none;
+
+        &:hover {
+            transform: none;
+        }
+    }
+
+    .calendarDay:hover {
+        transform: none;
+    }
+
+    .viewButton {
+        transition: none;
+    }
+}

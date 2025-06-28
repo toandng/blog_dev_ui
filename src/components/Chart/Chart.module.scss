@@ -1,0 +1,504 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.chartContainer {
+    background-color: $surface-primary;
+    border: 1px solid $border-light;
+    border-radius: $radius-lg;
+    padding: $spacing-4;
+    box-shadow: $shadow-sm;
+    transition: box-shadow $transition-base;
+
+    &:hover {
+        box-shadow: $shadow-md;
+    }
+
+    @include mobile-only {
+        padding: $spacing-3;
+        border-radius: $radius-md;
+    }
+}
+
+.chartHeader {
+    margin-bottom: $spacing-4;
+    text-align: center;
+
+    @include mobile-only {
+        margin-bottom: $spacing-3;
+    }
+}
+
+.chartTitle {
+    @include heading-base;
+    font-size: $text-lg;
+    color: $text-primary;
+    margin: 0 0 $spacing-1 0;
+
+    @include mobile-only {
+        font-size: $text-base;
+    }
+}
+
+.chartSubtitle {
+    @include body-small;
+    color: $text-muted;
+    margin: 0;
+    font-size: $text-sm;
+}
+
+.chartWrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.chart {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+// Chart elements
+.line {
+    transition: stroke-width $transition-base;
+
+    &:hover {
+        stroke-width: 3;
+    }
+}
+
+.area {
+    transition: fill-opacity $transition-base;
+
+    &:hover {
+        fill-opacity: 0.4;
+    }
+}
+
+.bar {
+    transition: all $transition-base;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.8;
+        transform: translateY(-2px);
+    }
+}
+
+.pieSegment {
+    transition: all $transition-base;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.8;
+        transform: scale(1.05);
+        transform-origin: center;
+    }
+}
+
+.dataPoint {
+    transition: all $transition-base;
+    cursor: pointer;
+
+    &:hover {
+        r: 6;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    }
+}
+
+// Axis styling
+.axisLabel {
+    font-family: $font-sans;
+    font-size: $text-xs;
+    fill: $text-muted;
+
+    @include mobile-only {
+        font-size: 10px;
+    }
+}
+
+.axisTitle {
+    font-family: $font-sans;
+    font-weight: $font-medium;
+    fill: $text-secondary;
+
+    @include mobile-only {
+        font-size: 12px;
+    }
+}
+
+// Tooltip
+.tooltip {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    pointer-events: none;
+    animation: tooltipFadeIn 0.2s ease-out;
+}
+
+.tooltipContent {
+    background-color: rgba($gray-900, 0.9);
+    color: $white;
+    padding: $spacing-2 $spacing-3;
+    border-radius: $radius-md;
+    font-size: $text-sm;
+    box-shadow: $shadow-lg;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba($white, 0.1);
+}
+
+.tooltipLabel {
+    font-weight: $font-medium;
+    margin-bottom: $spacing-1;
+    opacity: 0.9;
+}
+
+.tooltipValue {
+    font-weight: $font-bold;
+    font-size: $text-base;
+}
+
+// Legend
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: $spacing-3;
+    margin-top: $spacing-4;
+    padding-top: $spacing-3;
+    border-top: 1px solid $border-light;
+
+    @include mobile-only {
+        gap: $spacing-2;
+        margin-top: $spacing-3;
+    }
+}
+
+.legendItem {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+    cursor: pointer;
+    transition: opacity $transition-base;
+
+    &:hover {
+        opacity: 0.7;
+    }
+}
+
+.legendColor {
+    width: 12px;
+    height: 12px;
+    border-radius: $radius-sm;
+    flex-shrink: 0;
+}
+
+.legendLabel {
+    @include body-small;
+    color: $text-secondary;
+    font-size: $text-sm;
+    white-space: nowrap;
+
+    @include mobile-only {
+        font-size: $text-xs;
+    }
+}
+
+// Animations
+@keyframes tooltipFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes chartLoad {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chart {
+    animation: chartLoad 0.6s ease-out;
+}
+
+// Loading state
+.chartContainer[data-loading="true"] {
+    .chart {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    &::after {
+        content: "Loading...";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: $text-muted;
+        font-size: $text-sm;
+        z-index: 5;
+    }
+}
+
+// Error state
+.chartContainer[data-error="true"] {
+    border-color: $danger-300;
+    background-color: $danger-50;
+
+    .chartTitle {
+        color: $danger-700;
+    }
+
+    &::after {
+        content: "Failed to load chart";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: $danger-600;
+        font-size: $text-sm;
+        z-index: 5;
+    }
+}
+
+// Empty state
+.chartContainer[data-empty="true"] {
+    .chart {
+        opacity: 0.3;
+    }
+
+    &::after {
+        content: "No data available";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: $text-muted;
+        font-size: $text-sm;
+        z-index: 5;
+    }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+    .chartContainer {
+        background-color: $gray-800;
+        border-color: $gray-700;
+    }
+
+    .tooltipContent {
+        background-color: rgba($gray-100, 0.95);
+        color: $gray-900;
+        border-color: rgba($gray-800, 0.1);
+    }
+
+    .axisLabel,
+    .axisTitle {
+        fill: $gray-300;
+    }
+
+    .legend {
+        border-top-color: $gray-700;
+    }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+    .chartContainer {
+        border: 2px solid $text-primary;
+    }
+
+    .axisLabel,
+    .axisTitle {
+        fill: $text-primary;
+    }
+
+    .line {
+        stroke: $text-primary;
+        stroke-width: 3;
+    }
+
+    .tooltipContent {
+        background-color: $text-primary;
+        color: $surface-primary;
+        border: none;
+    }
+}
+
+// Print styles
+@media print {
+    .chartContainer {
+        box-shadow: none;
+        border: 1px solid $gray-300;
+        page-break-inside: avoid;
+    }
+
+    .tooltip {
+        display: none;
+    }
+
+    .chart {
+        animation: none;
+    }
+
+    // Make chart elements more visible in print
+    .line {
+        stroke-width: 2;
+        stroke: $gray-800;
+    }
+
+    .bar {
+        stroke: $gray-800;
+        stroke-width: 1;
+    }
+
+    .axisLabel,
+    .axisTitle {
+        fill: $gray-800;
+    }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+    .chart,
+    .line,
+    .area,
+    .bar,
+    .pieSegment,
+    .dataPoint,
+    .legendItem {
+        animation: none;
+        transition: none;
+    }
+
+    .tooltip {
+        animation: none;
+    }
+}
+
+// Responsive adjustments
+@include mobile-only {
+    .chartContainer {
+        overflow-x: auto;
+    }
+
+    .chart {
+        min-width: 320px;
+    }
+
+    .legend {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@include tablet-only {
+    .chart {
+        min-width: 400px;
+    }
+}
+
+// Focus states for accessibility
+.bar:focus,
+.pieSegment:focus,
+.dataPoint:focus {
+    outline: 2px solid $primary-500;
+    outline-offset: 2px;
+}
+
+// Hover states for better UX
+.chartContainer:hover {
+    .dataPoint {
+        opacity: 0.7;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    .bar {
+        opacity: 0.7;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    .pieSegment {
+        opacity: 0.7;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
+
+// Chart type specific styles
+.chartContainer[data-type="pie"] {
+    .chartWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.chartContainer[data-type="bar"] {
+    .bar {
+        rx: 2;
+        ry: 2;
+    }
+}
+
+.chartContainer[data-type="line"] {
+    .line {
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+}
+
+.chartContainer[data-type="area"] {
+    .area {
+        stroke: none;
+    }
+
+    .line {
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+}
+
+// Size variants
+.chartContainer[data-size="small"] {
+    padding: $spacing-2;
+
+    .chartTitle {
+        font-size: $text-base;
+    }
+
+    .chartSubtitle {
+        font-size: $text-xs;
+    }
+}
+
+.chartContainer[data-size="large"] {
+    padding: $spacing-6;
+
+    .chartTitle {
+        font-size: $text-xl;
+    }
+
+    .chartSubtitle {
+        font-size: $text-base;
+    }
+}
