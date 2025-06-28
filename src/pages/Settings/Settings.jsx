@@ -40,12 +40,6 @@ const Settings = () => {
         allowDirectMessages: "everyone",
         searchEngineIndexing: true,
         showEmail: false,
-
-        // Display
-        theme: "light",
-        language: "en",
-        timezone: "America/New_York",
-        fontSize: "medium",
     });
 
     const settingsSections = [
@@ -53,7 +47,6 @@ const Settings = () => {
         { id: "content", label: "Content", icon: "📝" },
         { id: "notifications", label: "Notifications", icon: "🔔" },
         { id: "privacy", label: "Privacy", icon: "🔒" },
-        { id: "display", label: "Display", icon: "🎨" },
     ];
 
     const handleSettingChange = (field, value) => {
@@ -446,80 +439,6 @@ const Settings = () => {
         </div>
     );
 
-    const renderDisplaySettings = () => (
-        <div className={styles.settingsContent}>
-            <h2>Display & Accessibility</h2>
-
-            <div className={styles.settingGroup}>
-                <h3>Appearance</h3>
-                <div className={styles.settingRow}>
-                    <div className={styles.settingInfo}>
-                        <label>Theme</label>
-                        <span className={styles.settingDescription}>
-                            Choose your preferred color scheme
-                        </span>
-                    </div>
-                    <select
-                        value={settings.theme}
-                        onChange={(e) =>
-                            handleSettingChange("theme", e.target.value)
-                        }
-                        className={styles.selectInput}
-                    >
-                        <option value="light">Light</option>
-                        <option value="dark">Dark</option>
-                        <option value="auto">Auto (System)</option>
-                    </select>
-                </div>
-
-                <div className={styles.settingRow}>
-                    <div className={styles.settingInfo}>
-                        <label>Font Size</label>
-                        <span className={styles.settingDescription}>
-                            Adjust text size for better readability
-                        </span>
-                    </div>
-                    <select
-                        value={settings.fontSize}
-                        onChange={(e) =>
-                            handleSettingChange("fontSize", e.target.value)
-                        }
-                        className={styles.selectInput}
-                    >
-                        <option value="small">Small</option>
-                        <option value="medium">Medium</option>
-                        <option value="large">Large</option>
-                    </select>
-                </div>
-            </div>
-
-            <div className={styles.settingGroup}>
-                <h3>Localization</h3>
-                <div className={styles.settingRow}>
-                    <div className={styles.settingInfo}>
-                        <label>Language</label>
-                        <span className={styles.settingDescription}>
-                            Choose your preferred language
-                        </span>
-                    </div>
-                    <select
-                        value={settings.language}
-                        onChange={(e) =>
-                            handleSettingChange("language", e.target.value)
-                        }
-                        className={styles.selectInput}
-                    >
-                        <option value="en">English</option>
-                        <option value="es">Español</option>
-                        <option value="fr">Français</option>
-                        <option value="de">Deutsch</option>
-                        <option value="vi">Tiếng Việt</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    );
-
     const renderContent = () => {
         switch (activeSection) {
             case "account":
@@ -530,8 +449,6 @@ const Settings = () => {
                 return renderNotificationSettings();
             case "privacy":
                 return renderPrivacySettings();
-            case "display":
-                return renderDisplaySettings();
             default:
                 return renderAccountSettings();
         }

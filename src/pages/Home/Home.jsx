@@ -270,7 +270,7 @@ const Home = () => {
                                                 ={" "}
                                             </span>
                                             <span className={styles.codeString}>
-                                                'power'
+                                                &apos;power&apos;
                                             </span>
                                         </div>
                                         <div className={styles.codeLine}>
@@ -362,7 +362,7 @@ const Home = () => {
                         className={styles.recentPosts}
                     />
                     <div className={styles.sectionAction}>
-                        <Button variant="outlined" size="lg" asChild>
+                        <Button variant="secondary" size="lg" asChild>
                             <Link to="/topics">View All Posts</Link>
                         </Button>
                     </div>
@@ -378,7 +378,7 @@ const Home = () => {
                     </div>
                     <TopicList topics={mockTopics} />
                     <div className={styles.sectionAction}>
-                        <Button variant="outlined" asChild>
+                        <Button variant="secondary" asChild>
                             <Link to="/topics">Explore All Topics</Link>
                         </Button>
                     </div>

@@ -345,3 +345,79 @@ input:focus {
         margin-bottom: $spacing-12;
     }
 }
+
+// Privacy Controls
+.privacyControls {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-4;
+}
+
+.privacyItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-4;
+    border: 1px solid $border-light;
+    border-radius: $radius-base;
+    background-color: $bg-primary;
+    transition: border-color 0.2s ease;
+
+    &:hover {
+        border-color: $primary-300;
+    }
+}
+
+.privacyInfo {
+    flex: 1;
+    margin-right: $spacing-4;
+}
+
+.privacyLabel {
+    display: block;
+    font-weight: $font-semibold;
+    color: $text-primary;
+    margin-bottom: $spacing-1;
+    cursor: pointer;
+}
+
+.privacyDescription {
+    color: $text-secondary;
+    font-size: $text-sm;
+    line-height: $leading-relaxed;
+    margin: 0;
+}
+
+.privacySelect {
+    padding: $spacing-2 $spacing-3;
+    border: 1px solid $border-light;
+    border-radius: $radius-base;
+    background-color: $bg-primary;
+    color: $text-primary;
+    font-size: $text-sm;
+    min-width: 120px;
+    cursor: pointer;
+
+    &:focus {
+        outline: none;
+        border-color: $primary-500;
+        box-shadow: 0 0 0 3px rgba($primary-500, 0.1);
+    }
+}
+
+.privacyToggle {
+    width: 20px;
+    height: 20px;
+    accent-color: $primary-500;
+    cursor: pointer;
+}
+
+@include tablet-up {
+    .privacyItem {
+        align-items: flex-start;
+    }
+
+    .privacyInfo {
+        margin-right: $spacing-6;
+    }
+}

@@ -42,6 +42,14 @@ const EditProfile = () => {
             linkedin: currentUser?.social?.linkedin || "",
         },
         skills: currentUser?.skills?.join(", ") || "",
+        privacy: {
+            profileVisibility: "public", // public, private
+            showEmail: false,
+            showFollowersCount: true,
+            showFollowingCount: true,
+            allowDirectMessages: true,
+            showOnlineStatus: true,
+        },
     });
 
     const [imageFiles, setImageFiles] = useState({
@@ -65,6 +73,15 @@ const EditProfile = () => {
                 social: {
                     ...prev.social,
                     [socialField]: value,
+                },
+            }));
+        } else if (field.startsWith("privacy.")) {
+            const privacyField = field.split(".")[1];
+            setFormData((prev) => ({
+                ...prev,
+                privacy: {
+                    ...prev.privacy,
+                    [privacyField]: value,
                 },
             }));
         } else {
@@ -496,6 +513,183 @@ const EditProfile = () => {
                                 helperText="Separate skills with commas"
                                 fullWidth
                             />
+                        </div>
+
+                        {/* Privacy Settings */}
+                        <div className={styles.section}>
+                            <h3>Privacy Settings</h3>
+                            <div className={styles.privacyControls}>
+                                <div className={styles.privacyItem}>
+                                    <div className={styles.privacyInfo}>
+                                        <label className={styles.privacyLabel}>
+                                            Profile Visibility
+                                        </label>
+                                        <p
+                                            className={
+                                                styles.privacyDescription
+                                            }
+                                        >
+                                            Control who can view your profile
+                                        </p>
+                                    </div>
+                                    <select
+                                        value={
+                                            formData.privacy.profileVisibility
+                                        }
+                                        onChange={(e) =>
+                                            handleInputChange(
+                                                "privacy.profileVisibility",
+                                                e.target.value
+                                            )
+                                        }
+                                        className={styles.privacySelect}
+                                    >
+                                        <option value="public">Public</option>
+                                        <option value="private">Private</option>
+                                    </select>
+                                </div>
+
+                                <div className={styles.privacyItem}>
+                                    <div className={styles.privacyInfo}>
+                                        <label className={styles.privacyLabel}>
+                                            Show Email Address
+                                        </label>
+                                        <p
+                                            className={
+                                                styles.privacyDescription
+                                            }
+                                        >
+                                            Display your email on your profile
+                                        </p>
+                                    </div>
+                                    <input
+                                        type="checkbox"
+                                        checked={formData.privacy.showEmail}
+                                        onChange={(e) =>
+                                            handleInputChange(
+                                                "privacy.showEmail",
+                                                e.target.checked
+                                            )
+                                        }
+                                        className={styles.privacyToggle}
+                                    />
+                                </div>
+
+                                <div className={styles.privacyItem}>
+                                    <div className={styles.privacyInfo}>
+                                        <label className={styles.privacyLabel}>
+                                            Show Followers Count
+                                        </label>
+                                        <p
+                                            className={
+                                                styles.privacyDescription
+                                            }
+                                        >
+                                            Display number of followers on your
+                                            profile
+                                        </p>
+                                    </div>
+                                    <input
+                                        type="checkbox"
+                                        checked={
+                                            formData.privacy.showFollowersCount
+                                        }
+                                        onChange={(e) =>
+                                            handleInputChange(
+                                                "privacy.showFollowersCount",
+                                                e.target.checked
+                                            )
+                                        }
+                                        className={styles.privacyToggle}
+                                    />
+                                </div>
+
+                                <div className={styles.privacyItem}>
+                                    <div className={styles.privacyInfo}>
+                                        <label className={styles.privacyLabel}>
+                                            Show Following Count
+                                        </label>
+                                        <p
+                                            className={
+                                                styles.privacyDescription
+                                            }
+                                        >
+                                            Display number of people you follow
+                                        </p>
+                                    </div>
+                                    <input
+                                        type="checkbox"
+                                        checked={
+                                            formData.privacy.showFollowingCount
+                                        }
+                                        onChange={(e) =>
+                                            handleInputChange(
+                                                "privacy.showFollowingCount",
+                                                e.target.checked
+                                            )
+                                        }
+                                        className={styles.privacyToggle}
+                                    />
+                                </div>
+
+                                <div className={styles.privacyItem}>
+                                    <div className={styles.privacyInfo}>
+                                        <label className={styles.privacyLabel}>
+                                            Allow Direct Messages
+                                        </label>
+                                        <p
+                                            className={
+                                                styles.privacyDescription
+                                            }
+                                        >
+                                            Let other users send you direct
+                                            messages
+                                        </p>
+                                    </div>
+                                    <input
+                                        type="checkbox"
+                                        checked={
+                                            formData.privacy.allowDirectMessages
+                                        }
+                                        onChange={(e) =>
+                                            handleInputChange(
+                                                "privacy.allowDirectMessages",
+                                                e.target.checked
+                                            )
+                                        }
+                                        className={styles.privacyToggle}
+                                    />
+                                </div>
+
+                                <div className={styles.privacyItem}>
+                                    <div className={styles.privacyInfo}>
+                                        <label className={styles.privacyLabel}>
+                                            Show Online Status
+                                        </label>
+                                        <p
+                                            className={
+                                                styles.privacyDescription
+                                            }
+                                        >
+                                            Display when you are online to other
+                                            users
+                                        </p>
+                                    </div>
+                                    <input
+                                        type="checkbox"
+                                        checked={
+                                            formData.privacy.showOnlineStatus
+                                        }
+                                        onChange={(e) =>
+                                            handleInputChange(
+                                                "privacy.showOnlineStatus",
+                                                e.target.checked
+                                            )
+                                        }
+                                        className={styles.privacyToggle}
+                                    />
+                                </div>
+                            </div>
                         </div>
 
                         {/* Form Actions */}

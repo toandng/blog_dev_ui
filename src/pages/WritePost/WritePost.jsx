@@ -4,6 +4,7 @@ import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import Badge from "../../components/Badge/Badge";
 import FallbackImage from "../../components/FallbackImage/FallbackImage";
+import RichTextEditor from "../../components/RichTextEditor/RichTextEditor";
 import styles from "./WritePost.module.scss";
 
 const WritePost = () => {
@@ -18,6 +19,7 @@ const WritePost = () => {
         coverImage: "",
         topics: [],
         status: "draft",
+        visibility: "public",
     });
 
     const [errors, setErrors] = useState({});
@@ -41,6 +43,28 @@ const WritePost = () => {
         "DevOps",
     ];
 
+    // Visibility options
+    const visibilityOptions = [
+        {
+            value: "public",
+            label: "Public",
+            description: "Anyone can view this post",
+            icon: "🌍",
+        },
+        {
+            value: "followers",
+            label: "Followers Only",
+            description: "Only your followers can view this post",
+            icon: "👥",
+        },
+        {
+            value: "private",
+            label: "Private",
+            description: "Only you can view this post",
+            icon: "🔒",
+        },
+    ];
+
     useEffect(() => {
         if (isEditing) {
             // Mock existing post data
@@ -54,6 +78,7 @@ const WritePost = () => {
                     "https://via.placeholder.com/800x400?text=React+Hooks",
                 topics: ["React", "JavaScript"],
                 status: "draft",
+                visibility: "public",
             };
             setFormData(mockPost);
             setSelectedTopics(mockPost.topics);
@@ -72,6 +97,13 @@ const WritePost = () => {
                 [field]: "",
             }));
         }
+    };
+
+    const handleVisibilityChange = (visibility) => {
+        setFormData((prev) => ({
+            ...prev,
+            visibility,
+        }));
     };
 
     const handleAddTopic = (topic) => {
@@ -387,6 +419,77 @@ const WritePost = () => {
                                     </div>
                                 </div>
 
+                                <div className={styles.visibilitySection}>
+                                    <label className={styles.label}>
+                                        Post Visibility
+                                    </label>
+                                    <div className={styles.visibilityOptions}>
+                                        {visibilityOptions.map((option) => (
+                                            <div
+                                                key={option.value}
+                                                className={`${
+                                                    styles.visibilityOption
+                                                } ${
+                                                    formData.visibility ===
+                                                    option.value
+                                                        ? styles.selected
+                                                        : ""
+                                                }`}
+                                                onClick={() =>
+                                                    handleVisibilityChange(
+                                                        option.value
+                                                    )
+                                                }
+                                            >
+                                                <div
+                                                    className={
+                                                        styles.optionHeader
+                                                    }
+                                                >
+                                                    <span
+                                                        className={
+                                                            styles.optionIcon
+                                                        }
+                                                    >
+                                                        {option.icon}
+                                                    </span>
+                                                    <span
+                                                        className={
+                                                            styles.optionLabel
+                                                        }
+                                                    >
+                                                        {option.label}
+                                                    </span>
+                                                    <input
+                                                        type="radio"
+                                                        name="visibility"
+                                                        value={option.value}
+                                                        checked={
+                                                            formData.visibility ===
+                                                            option.value
+                                                        }
+                                                        onChange={() =>
+                                                            handleVisibilityChange(
+                                                                option.value
+                                                            )
+                                                        }
+                                                        className={
+                                                            styles.visibilityRadio
+                                                        }
+                                                    />
+                                                </div>
+                                                <p
+                                                    className={
+                                                        styles.optionDescription
+                                                    }
+                                                >
+                                                    {option.description}
+                                                </p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
                                 <div className={styles.contentSection}>
                                     <label
                                         className={styles.label}
@@ -394,21 +497,18 @@ const WritePost = () => {
                                     >
                                         Content *
                                     </label>
-                                    <textarea
-                                        id="content"
-                                        className={`${styles.contentTextarea} ${
-                                            errors.content ? styles.error : ""
-                                        }`}
-                                        placeholder="Start writing your post content... (Supports Markdown)"
+                                    <RichTextEditor
                                         value={formData.content}
-                                        onChange={handleInputChange("content")}
-                                        rows={20}
+                                        onChange={(value) =>
+                                            setFormData((prev) => ({
+                                                ...prev,
+                                                content: value,
+                                            }))
+                                        }
+                                        placeholder="Start writing your post content..."
+                                        error={errors.content}
+                                        className={styles.richTextEditor}
                                     />
-                                    {errors.content && (
-                                        <div className={styles.errorText}>
-                                            {errors.content}
-                                        </div>
-                                    )}
                                 </div>
                             </div>
                         </div>
@@ -443,10 +543,14 @@ const WritePost = () => {
                                 </div>
 
                                 <div className={styles.previewBody}>
-                                    <pre className={styles.previewText}>
-                                        {formData.content ||
-                                            "Your post content..."}
-                                    </pre>
+                                    <div
+                                        className={styles.previewText}
+                                        dangerouslySetInnerHTML={{
+                                            __html:
+                                                formData.content ||
+                                                "<p>Your post content...</p>",
+                                        }}
+                                    />
                                 </div>
                             </div>
                         </div>

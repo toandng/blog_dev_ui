@@ -8,6 +8,7 @@ const Loading = ({
     className = "",
     text = "",
     fullScreen = false,
+    fullscreen = false, // Alternative prop name for backward compatibility
 }) => {
     const sizeClass = {
         sm: styles.small,
@@ -21,13 +22,15 @@ const Loading = ({
         white: styles.white,
     }[color];
 
+    const isFullScreen = fullScreen || fullscreen;
+
     const loadingClasses = `${
         styles.loading
     } ${sizeClass} ${colorClass} ${className} ${
-        fullScreen ? styles.fullScreen : ""
+        isFullScreen ? styles.fullScreen : ""
     }`.trim();
 
-    if (fullScreen) {
+    if (isFullScreen) {
         return (
             <div className={styles.fullScreenOverlay}>
                 <div className={loadingClasses}>
@@ -52,6 +55,7 @@ Loading.propTypes = {
     className: PropTypes.string,
     text: PropTypes.string,
     fullScreen: PropTypes.bool,
+    fullscreen: PropTypes.bool,
 };
 
 export default Loading;

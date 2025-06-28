@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import placeholderImage from "../../assets/placeholder.svg";
 
 const FallbackImage = ({
@@ -10,10 +10,15 @@ const FallbackImage = ({
     style,
     onError,
     onLoad,
+    lazy = false,
     ...props
 }) => {
-    const [imgSrc, setImgSrc] = useState(src || fallbackSrc);
+    const [imgSrc, setImgSrc] = useState(
+        lazy ? fallbackSrc : src || fallbackSrc
+    );
     const [hasError, setHasError] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(!lazy);
+    const imgRef = useRef(null);
 
     const handleError = (event) => {
         // Chỉ fallback nếu chưa lỗi và đang không phải là fallback image
@@ -40,22 +45,51 @@ const FallbackImage = ({
         }
     };
 
+    // Lazy loading effect
+    useEffect(() => {
+        if (!lazy || !imgRef.current || isLoaded) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                const [entry] = entries;
+                if (entry.isIntersecting) {
+                    setImgSrc(src || fallbackSrc);
+                    setIsLoaded(true);
+                    observer.disconnect();
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        observer.observe(imgRef.current);
+
+        return () => observer.disconnect();
+    }, [lazy, src, fallbackSrc, isLoaded]);
+
     // Reset imgSrc khi src prop thay đổi
     useEffect(() => {
-        if (src !== imgSrc) {
-            setImgSrc(src || fallbackSrc);
+        if (!lazy && src) {
+            setImgSrc(src);
+            setHasError(false);
+        } else if (lazy && isLoaded && src) {
+            setImgSrc(src);
+            setHasError(false);
+        } else if (!src) {
+            setImgSrc(fallbackSrc);
             setHasError(false);
         }
-    }, [src, fallbackSrc]);
+    }, [src, fallbackSrc, lazy, isLoaded]);
 
     return (
         <img
+            ref={imgRef}
             src={imgSrc}
             alt={alt}
             className={className}
             style={style}
             onError={handleError}
             onLoad={handleLoad}
+            loading={lazy ? "lazy" : "eager"}
             {...props}
         />
     );
@@ -69,6 +103,7 @@ FallbackImage.propTypes = {
     style: PropTypes.object,
     onError: PropTypes.func,
     onLoad: PropTypes.func,
+    lazy: PropTypes.bool,
 };
 
 export default FallbackImage;

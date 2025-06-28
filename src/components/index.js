@@ -4,6 +4,7 @@ export { default as Input } from "./Input/Input";
 export { default as Card } from "./Card/Card";
 export { default as Badge } from "./Badge/Badge";
 export { default as Pagination } from "./Pagination/Pagination";
+export { default as RichTextEditor } from "./RichTextEditor/RichTextEditor";
 
 // Loading & Feedback
 export { default as Loading } from "./Loading/Loading";
@@ -15,6 +16,7 @@ export { default as FallbackImage } from "./FallbackImage/FallbackImage";
 export { default as Header } from "./Header/Header";
 export { default as Footer } from "./Footer/Footer";
 export { default as Navigation } from "./Navigation/Navigation";
+export { default as NotificationDropdown } from "./NotificationDropdown/NotificationDropdown";
 
 // Page Components
 export { default as PostCard } from "./PostCard/PostCard";
