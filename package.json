@@ -14,7 +14,7 @@
     "quill": "^2.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-quill": "^2.0.0",
+    "react-quill-new": "^3.4.6",
     "react-router-dom": "^7.6.2",
     "sass": "^1.89.2"
   },

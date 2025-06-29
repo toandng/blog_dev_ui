@@ -275,8 +275,9 @@ const NotificationDropdown = ({
                                 {notifications
                                     .slice(0, 10)
                                     .map((notification) => (
-                                        <div
+                                        <Link
                                             key={notification.id}
+                                            to={notification.link || "#"}
                                             className={`${styles.item} ${
                                                 !notification.read
                                                     ? styles.unread
@@ -284,6 +285,11 @@ const NotificationDropdown = ({
                                             } ${getNotificationTypeColor(
                                                 notification.type
                                             )}`}
+                                            onClick={() =>
+                                                handleMarkAsRead(
+                                                    notification.id
+                                                )
+                                            }
                                         >
                                             <div className={styles.icon}>
                                                 {getNotificationIcon(
@@ -293,22 +299,7 @@ const NotificationDropdown = ({
 
                                             <div className={styles.itemContent}>
                                                 <div className={styles.message}>
-                                                    <Link
-                                                        to={
-                                                            notification.link ||
-                                                            "#"
-                                                        }
-                                                        className={
-                                                            styles.messageLink
-                                                        }
-                                                        onClick={() =>
-                                                            handleMarkAsRead(
-                                                                notification.id
-                                                            )
-                                                        }
-                                                    >
-                                                        {notification.message}
-                                                    </Link>
+                                                    {notification.message}
                                                 </div>
                                                 <time className={styles.time}>
                                                     {formatTimeAgo(
@@ -320,11 +311,13 @@ const NotificationDropdown = ({
                                             {!notification.read && (
                                                 <button
                                                     className={styles.markRead}
-                                                    onClick={() =>
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        e.stopPropagation();
                                                         handleMarkAsRead(
                                                             notification.id
-                                                        )
-                                                    }
+                                                        );
+                                                    }}
                                                     disabled={markingAsRead.has(
                                                         notification.id
                                                     )}
@@ -337,7 +330,7 @@ const NotificationDropdown = ({
                                                     />
                                                 </button>
                                             )}
-                                        </div>
+                                        </Link>
                                     ))}
                             </div>
                         )}

@@ -158,9 +158,12 @@
     align-items: flex-start;
     gap: $spacing-3;
     padding: $spacing-3 $spacing-6;
-    transition: background-color $transition-base;
+    transition: all $transition-base;
     cursor: pointer;
     border-left: 3px solid transparent;
+    color: $text-primary;
+    text-decoration: none;
+    position: relative;
 
     @include mobile-only {
         padding: $spacing-3 $spacing-4;
@@ -168,6 +171,18 @@
 
     &:hover {
         background-color: $bg-secondary;
+        text-decoration: none;
+        color: $text-primary;
+
+        .message {
+            color: $primary-600;
+        }
+    }
+
+    &:focus-visible {
+        outline: 2px solid $primary-500;
+        outline-offset: 2px;
+        border-radius: $radius-sm;
     }
 
     &.unread {
@@ -227,10 +242,17 @@
     display: flex;
     flex-direction: column;
     gap: $spacing-1;
+    padding-right: $spacing-8;
+
+    @include mobile-only {
+        padding-right: $spacing-6;
+    }
 }
 
 .message {
+    @include body-base;
     line-height: $leading-normal;
+    transition: color $transition-base;
 }
 
 .messageLink {
@@ -253,16 +275,28 @@
 }
 
 .markRead {
-    flex-shrink: 0;
+    position: absolute;
+    top: $spacing-3;
+    right: $spacing-6;
     background: none;
     border: none;
     padding: $spacing-1;
     cursor: pointer;
     border-radius: $radius-sm;
     transition: all $transition-base;
+    z-index: 1;
+
+    @include mobile-only {
+        right: $spacing-4;
+    }
 
     &:hover {
         background-color: $bg-secondary;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $primary-500;
+        outline-offset: 2px;
     }
 
     &:disabled {
@@ -321,8 +355,6 @@
 // Focus states
 .trigger:focus-visible,
 .markAllRead:focus-visible,
-.messageLink:focus-visible,
-.markRead:focus-visible,
 .viewAll:focus-visible {
     outline: 2px solid $primary-500;
     outline-offset: 2px;

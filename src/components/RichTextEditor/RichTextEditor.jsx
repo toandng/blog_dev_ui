@@ -1,7 +1,7 @@
 import { forwardRef, useMemo } from "react";
 import PropTypes from "prop-types";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 import styles from "./RichTextEditor.module.scss";
 
 const RichTextEditor = forwardRef(
@@ -55,7 +55,6 @@ const RichTextEditor = forwardRef(
                 "color",
                 "background",
                 "list",
-                "bullet",
                 "indent",
                 "blockquote",
                 "code-block",
