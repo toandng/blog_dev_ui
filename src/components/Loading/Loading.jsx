@@ -11,9 +11,10 @@ const Loading = ({
     fullscreen = false, // Alternative prop name for backward compatibility
 }) => {
     const sizeClass = {
-        sm: styles.small,
-        md: styles.medium,
-        lg: styles.large,
+        sm: styles.sm,
+        md: styles.md,
+        lg: styles.lg,
+        xl: styles.xl,
     }[size];
 
     const colorClass = {
@@ -50,7 +51,7 @@ const Loading = ({
 };
 
 Loading.propTypes = {
-    size: PropTypes.oneOf(["sm", "md", "lg"]),
+    size: PropTypes.oneOf(["sm", "md", "lg", "xl"]),
     color: PropTypes.oneOf(["primary", "secondary", "white"]),
     className: PropTypes.string,
     text: PropTypes.string,

@@ -157,7 +157,7 @@ const Topic = () => {
         return (
             <div className={styles.topicPage}>
                 <div className="container">
-                    <Loading size="lg" text="Loading topic..." />
+                    <Loading size="md" text="Loading topic..." />
                 </div>
             </div>
         );

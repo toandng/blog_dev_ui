@@ -7,6 +7,7 @@ import Badge from "../../components/Badge/Badge";
 import EmptyState from "../../components/EmptyState/EmptyState";
 import Loading from "../../components/Loading/Loading";
 import FallbackImage from "../../components/FallbackImage/FallbackImage";
+import ChatWindow from "../../components/ChatWindow/ChatWindow";
 
 import styles from "./Profile.module.scss";
 
@@ -20,6 +21,8 @@ const Profile = () => {
     const [activeTab, setActiveTab] = useState("posts");
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [isChatOpen, setIsChatOpen] = useState(false);
+    const [isChatMinimized, setIsChatMinimized] = useState(false);
 
     // Check if this is the user's own profile
     // In a real app, you'd get current user from auth context
@@ -146,11 +149,25 @@ const Profile = () => {
         });
     };
 
+    const handleMessageClick = () => {
+        setIsChatOpen(true);
+        setIsChatMinimized(false);
+    };
+
+    const handleChatClose = () => {
+        setIsChatOpen(false);
+        setIsChatMinimized(false);
+    };
+
+    const handleChatMinimize = (minimize) => {
+        setIsChatMinimized(minimize);
+    };
+
     if (loading) {
         return (
             <div className={styles.profile}>
                 <div className="container">
-                    <Loading size="lg" text="Loading profile..." />
+                    <Loading size="md" text="Loading profile..." />
                 </div>
             </div>
         );
@@ -221,7 +238,11 @@ const Profile = () => {
                                         <Button variant="primary" size="md">
                                             Follow
                                         </Button>
-                                        <Button variant="ghost" size="md">
+                                        <Button
+                                            variant="ghost"
+                                            size="md"
+                                            onClick={handleMessageClick}
+                                        >
                                             Message
                                         </Button>
                                     </>
@@ -447,6 +468,21 @@ const Profile = () => {
                     </main>
                 </div>
             </div>
+
+            {/* Chat Window */}
+            {!isOwnProfile && (
+                <ChatWindow
+                    user={{
+                        name: profile.name,
+                        avatar: profile.avatar,
+                        username: profile.username,
+                    }}
+                    isOpen={isChatOpen}
+                    isMinimized={isChatMinimized}
+                    onClose={handleChatClose}
+                    onMinimize={handleChatMinimize}
+                />
+            )}
         </div>
     );
 };

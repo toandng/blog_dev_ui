@@ -20,7 +20,7 @@ const FeaturedPosts = ({
                 {...props}
             >
                 {showTitle && <h2 className={styles.title}>{title}</h2>}
-                <Loading size="lg" text="Loading featured posts..." />
+                <Loading size="md" text="Loading featured posts..." />
             </section>
         );
     }

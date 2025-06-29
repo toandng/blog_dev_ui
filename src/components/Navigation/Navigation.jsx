@@ -8,7 +8,6 @@ const Navigation = () => {
     const navItems = [
         { path: "/", label: "Home" },
         { path: "/topics", label: "Topics" },
-        { path: "/messages", label: "Messages" },
     ];
 
     const isActive = (path) => {

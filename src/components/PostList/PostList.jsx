@@ -19,7 +19,7 @@ const PostList = ({
     if (loading) {
         return (
             <div className={`${styles.postList} ${className || ""}`} {...props}>
-                <Loading size="lg" text="Loading posts..." />
+                <Loading size="md" text="Loading posts..." />
             </div>
         );
     }

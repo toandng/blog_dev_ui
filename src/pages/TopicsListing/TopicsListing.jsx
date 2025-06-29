@@ -86,7 +86,7 @@ const TopicsListing = () => {
         return (
             <div className={styles.topicsListing}>
                 <div className="container">
-                    <Loading size="lg" text="Loading topics..." />
+                    <Loading size="md" text="Loading topics..." />
                 </div>
             </div>
         );
