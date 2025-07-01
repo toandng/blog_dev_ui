@@ -285,23 +285,19 @@ const ResetPassword = () => {
                         required
                     />
                     {formData.password && (
-                        <div className={styles.passwordStrength}>
+                        <div
+                            className={styles.passwordStrength}
+                            style={{
+                                "--strength-width": `${
+                                    (passwordStrength.strength / 5) * 100
+                                }%`,
+                                "--strength-color": passwordStrength.color,
+                            }}
+                        >
                             <div className={styles.strengthBar}>
-                                <div
-                                    className={styles.strengthFill}
-                                    style={{
-                                        width: `${
-                                            (passwordStrength.strength / 5) *
-                                            100
-                                        }%`,
-                                        backgroundColor: passwordStrength.color,
-                                    }}
-                                />
+                                <div className={styles.strengthFill} />
                             </div>
-                            <span
-                                className={styles.strengthLabel}
-                                style={{ color: passwordStrength.color }}
-                            >
+                            <span className={styles.strengthLabel}>
                                 {passwordStrength.label}
                             </span>
                         </div>

@@ -3,6 +3,7 @@
 
 .commentItem {
     margin-bottom: $spacing-4;
+    margin-left: var(--comment-indent, 0);
 
     &:last-child {
         margin-bottom: 0;

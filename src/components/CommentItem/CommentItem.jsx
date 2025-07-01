@@ -69,7 +69,7 @@ const CommentItem = ({
     return (
         <div
             className={`${styles.commentItem} ${className || ""}`}
-            style={{ marginLeft: level > 0 ? `${level * 24}px` : "0" }}
+            style={{ "--comment-indent": level > 0 ? `${level * 24}px` : "0" }}
             {...props}
         >
             <div className={styles.comment}>
