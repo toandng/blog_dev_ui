@@ -235,8 +235,14 @@ const Home = () => {
                                 <Button variant="primary" size="lg" asChild>
                                     <Link to="/topics">Explore Topics</Link>
                                 </Button>
-                                <Button variant="ghost" size="lg" asChild>
-                                    <Link to="#featured">Latest Posts</Link>
+                                <Button
+                                    component="a"
+                                    variant="ghost"
+                                    size="lg"
+                                    href="#featured"
+                                    className={styles.heroButton}
+                                >
+                                    Featured Posts
                                 </Button>
                             </div>
                         </div>

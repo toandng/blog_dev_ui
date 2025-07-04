@@ -17,6 +17,11 @@ html {
     -moz-osx-font-smoothing: grayscale;
 }
 
+html,
+body {
+    scroll-behavior: smooth;
+}
+
 body {
     margin: 0;
     font-family: $font-sans;

@@ -11,6 +11,7 @@ const Button = ({
     loading = false,
     fullWidth = false,
     type = "button",
+    component: Component = "button",
     onClick,
     className,
     asChild = false,
@@ -47,7 +48,7 @@ const Button = ({
     }
 
     return (
-        <button
+        <Component
             type={type}
             className={buttonClasses}
             disabled={disabled || loading}
@@ -55,12 +56,13 @@ const Button = ({
             {...props}
         >
             {content}
-        </button>
+        </Component>
     );
 };
 
 Button.propTypes = {
     children: PropTypes.node.isRequired,
+    component: PropTypes.elementType,
     variant: PropTypes.oneOf(["primary", "secondary", "ghost", "danger"]),
     size: PropTypes.oneOf(["sm", "md", "lg"]),
     disabled: PropTypes.bool,

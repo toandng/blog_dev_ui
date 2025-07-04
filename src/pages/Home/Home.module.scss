@@ -224,6 +224,7 @@
 
 // Sections
 .section {
+    scroll-margin-top: 160px;
     margin-bottom: $spacing-24;
 
     @include mobile-only {
