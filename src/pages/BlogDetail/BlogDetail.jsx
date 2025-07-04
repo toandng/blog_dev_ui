@@ -295,6 +295,66 @@ const BlogDetail = () => {
         );
     };
 
+    const handleEditComment = async (commentId, newContent) => {
+        try {
+            // Simulate API call
+            await new Promise((resolve) => setTimeout(resolve, 500));
+
+            const updateCommentRecursively = (comments) => {
+                return comments.map((comment) => {
+                    if (comment.id === commentId) {
+                        return {
+                            ...comment,
+                            content: newContent,
+                            isEdited: true,
+                        };
+                    }
+                    if (comment.replies && comment.replies.length > 0) {
+                        return {
+                            ...comment,
+                            replies: updateCommentRecursively(comment.replies),
+                        };
+                    }
+                    return comment;
+                });
+            };
+
+            setComments((prev) => updateCommentRecursively(prev));
+            console.log("Comment edited:", commentId, newContent);
+        } catch (error) {
+            console.error("Failed to edit comment:", error);
+        }
+    };
+
+    const handleDeleteComment = async (commentId) => {
+        try {
+            // Simulate API call
+            await new Promise((resolve) => setTimeout(resolve, 500));
+
+            const deleteCommentRecursively = (comments) => {
+                return comments
+                    .filter((comment) => comment.id !== commentId)
+                    .map((comment) => {
+                        if (comment.replies && comment.replies.length > 0) {
+                            return {
+                                ...comment,
+                                replies: deleteCommentRecursively(
+                                    comment.replies
+                                ),
+                            };
+                        }
+                        return comment;
+                    });
+            };
+
+            setComments((prev) => deleteCommentRecursively(prev));
+
+            console.log("Comment deleted:", commentId);
+        } catch (error) {
+            console.error("Failed to delete comment:", error);
+        }
+    };
+
     const handleLikePost = async () => {
         if (likingInProgress) return;
 
@@ -475,6 +535,8 @@ const BlogDetail = () => {
                     onAddComment={handleAddComment}
                     onReplyComment={handleReplyComment}
                     onLikeComment={handleLikeComment}
+                    onEditComment={handleEditComment}
+                    onDeleteComment={handleDeleteComment}
                     isAuthenticated={isAuthenticated}
                 />
             </div>

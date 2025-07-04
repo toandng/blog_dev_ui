@@ -71,12 +71,15 @@
     @include heading-1;
     margin-bottom: $spacing-6;
     color: $text-primary;
-    line-height: $leading-tight;
-    font-size: clamp($text-3xl, 5vw, $text-5xl);
 
     @include mobile-only {
         margin-bottom: $spacing-4;
         font-size: $text-3xl;
+    }
+
+    & {
+        line-height: $leading-tight;
+        font-size: clamp($text-3xl, 5vw, $text-5xl);
     }
 }
 

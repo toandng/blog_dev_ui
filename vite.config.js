@@ -13,6 +13,14 @@ export default defineConfig({
             "@": resolve(__dirname, "src"),
         },
     },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                quietDeps: true,
+                silenceDeprecations: ["legacy-js-api", "mixed-decls"],
+            },
+        },
+    },
     build: {
         minify: "terser",
         cssMinify: true,

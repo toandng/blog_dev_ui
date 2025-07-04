@@ -29,8 +29,11 @@
 
     .title {
         @include heading-2;
-        color: $text-primary;
-        margin-bottom: $spacing-2;
+
+        & {
+            color: $text-primary;
+            margin-bottom: $spacing-2;
+        }
     }
 
     .subtitle {
