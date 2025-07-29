@@ -1,10 +1,9 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
-import CommentItem from '../CommentItem/CommentItem';
-import Button from '../Button/Button';
-import Input from '../Input/Input';
-import EmptyState from '../EmptyState/EmptyState';
-import styles from './CommentSection.module.scss';
+import { useState } from "react";
+import PropTypes from "prop-types";
+import CommentItem from "../CommentItem/CommentItem";
+import Button from "../Button/Button";
+import EmptyState from "../EmptyState/EmptyState";
+import styles from "./CommentSection.module.scss";
 
 const CommentSection = ({
   comments = [],
@@ -18,7 +17,7 @@ const CommentSection = ({
   className,
   ...props
 }) => {
-  const [newComment, setNewComment] = useState('');
+  const [newComment, setNewComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -29,10 +28,10 @@ const CommentSection = ({
     try {
       if (onAddComment) {
         await onAddComment(newComment.trim());
-        setNewComment('');
+        setNewComment("");
       }
     } catch (error) {
-      console.error('Failed to add comment:', error);
+      console.error("Failed to add comment:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -43,14 +42,17 @@ const CommentSection = ({
       try {
         await onReplyComment(parentId, content);
       } catch (error) {
-        console.error('Failed to reply to comment:', error);
+        console.error("Failed to reply to comment:", error);
       }
     }
   };
 
   if (loading) {
     return (
-      <section className={`${styles.commentSection} ${className || ''}`} {...props}>
+      <section
+        className={`${styles.commentSection} ${className || ""}`}
+        {...props}
+      >
         <h2 className={styles.title}>Comments</h2>
         <div className={styles.skeleton}>
           {Array.from({ length: 3 }, (_, index) => (
@@ -68,11 +70,12 @@ const CommentSection = ({
   }
 
   return (
-    <section className={`${styles.commentSection} ${className || ''}`} {...props}>
+    <section
+      className={`${styles.commentSection} ${className || ""}`}
+      {...props}
+    >
       <div className={styles.header}>
-        <h2 className={styles.title}>
-          Comments ({comments.length})
-        </h2>
+        <h2 className={styles.title}>Comments ({comments.length})</h2>
       </div>
 
       {/* Comment Form */}
@@ -98,13 +101,15 @@ const CommentSection = ({
               disabled={!newComment.trim() || isSubmitting}
               loading={isSubmitting}
             >
-              {isSubmitting ? 'Posting...' : 'Post Comment'}
+              {isSubmitting ? "Posting..." : "Post Comment"}
             </Button>
           </div>
         </form>
       ) : (
         <div className={styles.loginPrompt}>
-          <p>Please <a href="/login">sign in</a> to leave a comment.</p>
+          <p>
+            Please <a href="/login">sign in</a> to leave a comment.
+          </p>
         </div>
       )}
 
@@ -117,17 +122,19 @@ const CommentSection = ({
             description="Be the first to share your thoughts!"
           />
         ) : (
-          comments.map((comment) => (
-            <CommentItem
-              key={comment.id}
-              comment={comment}
-              onReply={isAuthenticated ? handleReply : undefined}
-              onLike={isAuthenticated ? onLikeComment : undefined}
-              onEdit={isAuthenticated ? onEditComment : undefined}
-              onDelete={isAuthenticated ? onDeleteComment : undefined}
-              showActions={isAuthenticated}
-            />
-          ))
+          comments.map((comment) => {
+            return (
+              <CommentItem
+                key={comment.id}
+                comment={comment}
+                onReply={isAuthenticated ? handleReply : undefined}
+                onLike={isAuthenticated ? onLikeComment : undefined}
+                onEdit={isAuthenticated ? onEditComment : undefined}
+                onDelete={isAuthenticated ? onDeleteComment : undefined}
+                showActions={isAuthenticated}
+              />
+            );
+          })
         )}
       </div>
 
@@ -147,13 +154,15 @@ CommentSection.propTypes = {
   comments: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-      author: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        avatar: PropTypes.string.isRequired,
+      user: PropTypes.shape({
+        first_name: PropTypes.string.isRequired,
+        last_name: PropTypes.string.isRequired,
+        avatar: PropTypes.string,
       }).isRequired,
       content: PropTypes.string.isRequired,
-      createdAt: PropTypes.string.isRequired,
-      likes: PropTypes.number,
+      created_at: PropTypes.string.isRequired,
+      updated_at: PropTypes.string.isRequired,
+      like_count: PropTypes.number,
       isLiked: PropTypes.bool,
       replies: PropTypes.array,
       isEdited: PropTypes.bool,
