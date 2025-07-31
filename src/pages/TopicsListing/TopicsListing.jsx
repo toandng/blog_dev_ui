@@ -10,17 +10,15 @@ const TopicsListing = () => {
   useEffect(() => {
     const fetchTopics = async () => {
       setLoading(true);
-
       try {
         const dataTopic = await topicService.getListTopic();
         setTopics(dataTopic.data);
       } catch (error) {
-        console.error("Failed to fetch topics:", error);
+        console.log(error);
       } finally {
         setLoading(false);
       }
     };
-
     fetchTopics();
   }, []);
 

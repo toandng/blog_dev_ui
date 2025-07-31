@@ -85,7 +85,7 @@ const Profile = () => {
             "https://via.placeholder.com/1200x300?text=Cover+Image",
           badges: userData.badges || [],
           stats: {
-            postsCount: userData.posts_count || 0,
+            posts_count: userData.posts_count || 0,
             followers: userData.follower_count || 0,
             following: userData.following_count || 0,
             likes: userData.like_count || 0,

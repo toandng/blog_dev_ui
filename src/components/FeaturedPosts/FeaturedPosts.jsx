@@ -66,7 +66,7 @@ const FeaturedPosts = ({
               user_id={post.user}
               description={post.description}
               like_count={post.like_count}
-              public_at={post.public_at}
+              published_at={post.published_at}
               readTime={post.readTime}
               like={post.like_count}
               topic={post.topic?.first_name}
@@ -92,7 +92,7 @@ FeaturedPosts.propTypes = {
       }).isRequired,
       // like_count: PropTypes.number,
       description: PropTypes.string.isRequired,
-      public_at: PropTypes.string.isRequired,
+      published_at: PropTypes.string.isRequired,
       readTime: PropTypes.number,
       topic: PropTypes.string,
       slug: PropTypes.string.isRequired,

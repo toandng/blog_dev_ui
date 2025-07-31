@@ -78,7 +78,7 @@ const TopicList = ({
               {/* Post Count */}
               <div className={styles.meta}>
                 <Badge variant="secondary" size="sm">
-                  {topic.postCount || 0} posts
+                  {topic.posts_count || 0} posts
                 </Badge>
               </div>
             </div>

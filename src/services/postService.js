@@ -2,7 +2,6 @@ import httpRequest from "../utils/httpRequest";
 
 export const getList = async () => {
   const posts = await httpRequest.get("/posts");
-
   return posts;
 };
 export const getAllByMe = async () => {
@@ -15,7 +14,7 @@ export const getByUserName = async (username) => {
   const result = await httpRequest.get(`/posts/user/${username}`);
   return result;
 };
-export const getById = async (topicId) => {
+export const getListTopicById = async (topicId) => {
   const post = await httpRequest.get(`/posts/topic/${topicId}`);
   console.log(post);
 
@@ -57,7 +56,7 @@ export const remove = async (id) => {
 export default {
   getList,
   getAllByMe,
-  getById,
+  getListTopicById,
   getByUserName,
   getBySlug,
   getRelatedPosts,

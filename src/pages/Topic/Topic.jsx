@@ -24,76 +24,6 @@ const Topic = () => {
   const [totalPages, setTotalPages] = useState(1);
   const postsPerPage = 10;
 
-  // Mock data - replace with actual API calls
-  // const mockTopics = {
-  //   javascript: {
-  //     id: 1,
-  //     name: "JavaScript",
-  //     slug: "javascript",
-  //     description:
-  //       "Everything about JavaScript programming language, frameworks, and best practices.",
-  //     icon: "🚀",
-  //     postCount: 45,
-  //     createdAt: "2023-01-15",
-  //   },
-  //   react: {
-  //     id: 2,
-  //     name: "React",
-  //     slug: "react",
-  //     description:
-  //       "React.js tutorials, tips, and advanced patterns for building modern web applications.",
-  //     icon: "⚛️",
-  //     postCount: 32,
-  //     createdAt: "2023-02-10",
-  //   },
-  //   nodejs: {
-  //     id: 3,
-  //     name: "Node.js",
-  //     slug: "nodejs",
-  //     description:
-  //       "Server-side JavaScript development with Node.js and its ecosystem.",
-  //     icon: "🟢",
-  //     postCount: 28,
-  //     createdAt: "2023-01-20",
-  //   },
-  //   css: {
-  //     id: 4,
-  //     name: "CSS",
-  //     slug: "css",
-  //     description:
-  //       "Modern CSS techniques, animations, and responsive design patterns.",
-  //     icon: "🎨",
-  //     postCount: 23,
-  //     createdAt: "2023-03-05",
-  //   },
-  // };
-
-  // const generateMockPosts = (topicName, page = 1) => {
-  //   const posts = [];
-  //   const startIndex = (page - 1) * postsPerPage;
-
-  //   for (let i = 1; i <= postsPerPage; i++) {
-  //     const postIndex = startIndex + i;
-  //     posts.push({
-  //       id: `${slug}-${postIndex}`,
-  //       title: `${topicName} Tutorial ${postIndex}: Advanced Concepts and Best Practices`,
-  //       excerpt: `Learn advanced ${topicName} concepts in this comprehensive tutorial. We'll cover important topics, best practices, and real-world examples that will help you become a better developer.`,
-  //       slug: `${slug}-tutorial-${postIndex}`,
-  //       author: {
-  //         name: "John Doe",
-  //         avatar: `https://via.placeholder.com/32?text=JD`,
-  //       },
-  //       publishedAt: new Date(2024, 0, postIndex).toISOString(),
-  //       readTime: Math.floor(Math.random() * 10) + 3,
-  //       topic: topicName,
-  //       featuredImage: `https://via.placeholder.com/400x200?text=${topicName}+${postIndex}`,
-  //     });
-  //   }
-
-  //   return posts;
-  // };
-
-  // Fetch topic data
   useEffect(() => {
     const fetchTopic = async () => {
       setLoading(true);
@@ -101,11 +31,18 @@ const Topic = () => {
 
       try {
         // Simulate API delay
-        const data = await topicService.getBySlug();
+
+        const data = await topicService.getBySlug(slug);
+        if (!data) {
+          setError("Topic not found");
+          return;
+        }
+
         setTopic(data);
-        setPosts(data.posts || []);
-        const totalPostCount = data.post_count?.length || 0;
-        setTotalPages(Math.ceil(totalPostCount / postsPerPage));
+
+        // Calculate total pages
+        const totalPostsCount = data.postCount;
+        setTotalPages(Math.ceil(totalPostsCount / postsPerPage));
       } catch (err) {
         setError("Failed to load topic");
       } finally {
@@ -122,20 +59,16 @@ const Topic = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       if (!topic) return;
-
       setPostsLoading(true);
-
       try {
-        const dataPost = await postService.getById(topic.id);
-
-        setPosts(dataPost.data);
-      } catch (err) {
-        console.error("Failed to load posts:", err);
+        const mocksPosts = await postService.getListTopicById(topic.id);
+        setPosts(mocksPosts.data);
+      } catch (error) {
+        console.log(error);
       } finally {
-        setPostsLoading(false);
+        setLoading(false);
       }
     };
-
     fetchPosts();
   }, [topic, currentPage]);
 
@@ -177,6 +110,7 @@ const Topic = () => {
 
         {/* Posts List */}
         <PostList
+          // maxPosts={posts.length}
           posts={posts}
           loading={postsLoading}
           currentPage={currentPage}

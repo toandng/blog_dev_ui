@@ -45,7 +45,6 @@ const CommentItem = ({
     is_like = false,
     replies = [],
   } = comment;
-  // console.log(user?.username);
 
   const isEdited = Boolean(edited_at);
 
@@ -146,7 +145,7 @@ const CommentItem = ({
                 ? user?.avatar
                 : `${import.meta.env.VITE_BASE_URL}/${user?.avatar}`
             }
-            alt={user?.username}
+            alt={user.username}
           />
         </div>
 
@@ -397,7 +396,6 @@ CommentItem.propTypes = {
   comment: PropTypes.shape({
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     user: PropTypes.shape({
-      username: PropTypes.string.isRequired,
       first_name: PropTypes.string.isRequired,
       last_name: PropTypes.string.isRequired,
       avatar: PropTypes.string,

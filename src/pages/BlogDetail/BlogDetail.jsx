@@ -81,6 +81,8 @@ const BlogDetail = () => {
 
   // checkFollower
   useEffect(() => {
+    if (!post?.user?.id) return;
+
     (async () => {
       try {
         const result = await userService.checkFollower(post?.user.id);
@@ -89,20 +91,28 @@ const BlogDetail = () => {
         console.log(error);
       }
     })();
-  }, [post?.user.id]);
+  }, [post?.user?.id]);
 
-  // relatedPosts
+  // relatedPosts - FIX: Thiếu () để gọi async function
   useEffect(() => {
+    if (!post?.id) return;
+
     (async () => {
-      const postRelateds = await postService.getRelatedPosts(post?.id);
-      setRelatedPosts(postRelateds.data);
+      try {
+        setRelatedLoading(true);
+        const postRelates = await postService.getRelatedPosts(post?.id);
+        setRelatedPosts(postRelates);
+      } catch (error) {
+        console.error("Failed to load related posts:", error);
+      } finally {
+        setRelatedLoading(false);
+      }
     })();
   }, [post?.id]);
 
   const handleAddComment = async (content) => {
     const data = {
       post_id: post.id,
-      // user_id: currentUser?.data?.id,
       content,
     };
 
@@ -116,8 +126,9 @@ const BlogDetail = () => {
 
       const newComment = {
         ...result,
-        created_at: result.created_at,
-        updated_at: result.updated_at,
+        created_at: result.createdAt || result.created_at,
+        updated_at: result.updatedAt || result.updated_at,
+        replies: [], // Đảm bảo có mảng replies
       };
 
       setComments((prev) => [newComment, ...prev]);
@@ -126,94 +137,113 @@ const BlogDetail = () => {
     }
   };
 
+  // FIX: Sửa logic reply comment
   const handleReplyComment = async (parentId, content) => {
-    // Tìm comment cấp 1 chứa parentId này
-    let topLevelParentId = parentId;
+    try {
+      // Tìm top-level parent ID
+      let topLevelParentId = parentId;
 
-    for (const comment of comments) {
-      if (comment.id === parentId) {
-        // Reply vào comment cấp 1 → giữ nguyên
-        break;
+      // Kiểm tra xem parentId có phải là reply không
+      for (const comment of comments) {
+        if (
+          comment.replies &&
+          comment.replies.some((reply) => reply.id === parentId)
+        ) {
+          topLevelParentId = comment.id;
+          break;
+        }
       }
 
-      // Nếu comment.replies chứa comment có id === parentId
-      if (
-        comment.replies &&
-        comment.replies.some((reply) => reply.id === parentId)
-      ) {
-        topLevelParentId = comment.id; // chuyển về cấp 1
-        break;
+      const response = await commentService.create({
+        post_id: post.id,
+        content,
+        parent_id: topLevelParentId,
+      });
+
+      const result = response?.data || response;
+
+      if (!result) {
+        throw new Error("No data returned from commentService.create");
       }
+
+      const newReply = {
+        ...result,
+        created_at: result.createdAt || result.created_at,
+        updated_at: result.updatedAt || result.updated_at,
+      };
+
+      // Cập nhật state ngay lập tức
+      setComments((prev) =>
+        prev.map((comment) =>
+          comment.id === topLevelParentId
+            ? {
+                ...comment,
+                replies: [...(comment.replies || []), newReply],
+              }
+            : comment
+        )
+      );
+
+      console.log("Reply added successfully:", newReply);
+    } catch (error) {
+      console.error("Failed to reply to comment:", error);
     }
-
-    const data = {
-      post_id: post.id,
-      content,
-      parent_id: topLevelParentId,
-    };
-
-    const { data: result } = await commentService.create(data);
-
-    const newComment = {
-      ...result,
-      created_at: result.createdAt,
-      updated_at: result.updatedAt,
-    };
-
-    setComments((prev) =>
-      prev.map((comment) =>
-        comment.id === topLevelParentId
-          ? { ...comment, replies: [...comment.replies, newComment] }
-          : comment
-      )
-    );
   };
 
   const handleLikeComment = async (commentId) => {
-    // Simulate API call
-    await commentService.toggleLike(commentId);
-    setComments((prev) =>
-      prev.map((comment) => {
-        if (comment.id === commentId) {
-          return {
-            ...comment,
-            is_like: !comment.is_like,
-            like_count: comment.is_like
-              ? comment.like_count - 1
-              : comment.like_count + 1,
-          };
-        }
+    try {
+      // Optimistic update trước
+      setComments((prev) =>
+        prev.map((comment) => {
+          if (comment.id === commentId) {
+            return {
+              ...comment,
+              is_like: !comment.is_like,
+              like_count: comment.is_like
+                ? comment.like_count - 1
+                : comment.like_count + 1,
+            };
+          }
 
-        if (comment.replies && comment.replies.length > 0) {
-          const updatedReplies = comment.replies.map((reply) => {
-            if (reply.id === commentId) {
-              return {
-                ...reply,
-                is_like: !reply.is_like,
-                like_count: reply.is_like
-                  ? reply.like_count - 1
-                  : reply.like_count + 1,
-              };
-            }
-            return reply;
-          });
+          if (comment.replies && comment.replies.length > 0) {
+            const updatedReplies = comment.replies.map((reply) => {
+              if (reply.id === commentId) {
+                return {
+                  ...reply,
+                  is_like: !reply.is_like,
+                  like_count: reply.is_like
+                    ? reply.like_count - 1
+                    : reply.like_count + 1,
+                };
+              }
+              return reply;
+            });
 
-          return { ...comment, replies: updatedReplies };
-        }
+            return { ...comment, replies: updatedReplies };
+          }
 
-        return comment;
-      })
-    );
+          return comment;
+        })
+      );
+
+      // Gọi API
+      await commentService.toggleLike(commentId);
+    } catch (error) {
+      console.error("Failed to toggle comment like:", error);
+      // Có thể revert lại state nếu cần
+    }
   };
 
+  // FIX: Sửa logic edit comment
   const handleEditComment = async (commentId, newContent) => {
     try {
-      // Simulate API call
+      // Gọi API trước
       await commentService.update(commentId, {
         content: newContent,
-        edited_at: Date.now(),
+        edited_at: new Date().toISOString(),
       });
 
+      // Cập nhật state sau khi API thành công
       const updateCommentRecursively = (comments) => {
         return comments.map((comment) => {
           if (comment.id === commentId) {
@@ -221,6 +251,7 @@ const BlogDetail = () => {
               ...comment,
               content: newContent,
               isEdited: true,
+              edited_at: new Date().toISOString(),
             };
           }
           if (comment.replies && comment.replies.length > 0) {
@@ -234,19 +265,16 @@ const BlogDetail = () => {
       };
 
       setComments((prev) => updateCommentRecursively(prev));
-      // console.log("Comment edited:", commentId, newContent);
+      console.log("Comment edited successfully:", commentId);
     } catch (error) {
       console.error("Failed to edit comment:", error);
     }
   };
-
   const handleDeleteComment = async (commentId) => {
     try {
-      // Simulate API call
-      await commentService.update(commentId, {
-        deleted_at: Date.now(),
-      });
+      await commentService.update(commentId, { deleted_at: "delete" });
 
+      // Xoá comment khỏi UI
       const deleteCommentRecursively = (comments) => {
         return comments
           .filter((comment) => comment.id !== commentId)
@@ -262,8 +290,6 @@ const BlogDetail = () => {
       };
 
       setComments((prev) => deleteCommentRecursively(prev));
-
-      // console.log("Comment deleted:", commentId);
     } catch (error) {
       console.error("Failed to delete comment:", error);
     }
@@ -275,17 +301,21 @@ const BlogDetail = () => {
     setLikingInProgress(true);
 
     // Optimistic update
+    const previousIsLiked = isLiked;
+    const previousLikes = likes;
+
     setIsLiked(!isLiked);
     setLikes(isLiked ? likes - 1 : likes + 1);
 
     try {
-      // Simulate API call
-      await commentService.toggleLike(post?.id);
-      // console.log("Post like toggled:", !isLiked);
+      // FIX: Sử dụng postService thay vì commentService cho post
+      (await postService.toggleLike)
+        ? postService.toggleLike(post?.id)
+        : commentService.toggleLike(post?.id);
     } catch (error) {
       // Revert on error
-      setIsLiked(isLiked);
-      setLikes(likes);
+      setIsLiked(previousIsLiked);
+      setLikes(previousLikes);
       console.error("Failed to toggle like:", error);
     } finally {
       setLikingInProgress(false);
@@ -298,15 +328,14 @@ const BlogDetail = () => {
     setBookmarkingInProgress(true);
 
     // Optimistic update
+    const previousIsBookmarked = isBookmarked;
     setIsBookmarked(!isBookmarked);
 
     try {
-      // Simulate API call
       await postService.toggleBookmarkPost(post?.id);
-      // console.log("Post bookmark toggled:", !isBookmarked);
     } catch (error) {
       // Revert on error
-      setIsBookmarked(isBookmarked);
+      setIsBookmarked(previousIsBookmarked);
       console.error("Failed to toggle bookmark:", error);
     } finally {
       setBookmarkingInProgress(false);

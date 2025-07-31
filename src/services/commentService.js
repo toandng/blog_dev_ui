@@ -14,6 +14,7 @@ export const update = async (data, id) => {
   const result = await httpRequest.put(`/comments/${id}`, data);
   return result;
 };
+
 export const toggleLike = async (data, id) => {
   const result = await httpRequest.post(`/comments/${id}/like`);
   return result;
