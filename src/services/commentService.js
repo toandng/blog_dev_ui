@@ -15,8 +15,8 @@ export const update = async (data, id) => {
   return result;
 };
 
-export const toggleLike = async (data, id) => {
-  const result = await httpRequest.post(`/comments/${id}/like`);
+export const toggleLike = async (commentId) => {
+  const result = await httpRequest.post(`/comments/${commentId}/like`);
   return result;
 };
 

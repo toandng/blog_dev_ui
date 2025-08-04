@@ -34,6 +34,14 @@ const BlogDetail = () => {
   const { currentUser } = useUser();
 
   useEffect(() => {
+    (async () => {
+      if (post) {
+        await postService.updateViews(post?.id);
+      }
+      console.log(post, "hihi");
+    })();
+  }, [post]);
+  useEffect(() => {
     const loadPost = async () => {
       setLoading(true);
       try {
@@ -93,7 +101,6 @@ const BlogDetail = () => {
     })();
   }, [post?.user?.id]);
 
-  // relatedPosts - FIX: Thiếu () để gọi async function
   useEffect(() => {
     if (!post?.id) return;
 
@@ -175,7 +182,7 @@ const BlogDetail = () => {
       // Cập nhật state ngay lập tức
       setComments((prev) =>
         prev.map((comment) =>
-          comment.id === topLevelParentId
+          comment?.id === topLevelParentId
             ? {
                 ...comment,
                 replies: [...(comment.replies || []), newReply],
@@ -195,13 +202,13 @@ const BlogDetail = () => {
       // Optimistic update trước
       setComments((prev) =>
         prev.map((comment) => {
-          if (comment.id === commentId) {
+          if (comment?.id === commentId) {
             return {
               ...comment,
               is_like: !comment.is_like,
               like_count: comment.is_like
-                ? comment.like_count - 1
-                : comment.like_count + 1,
+                ? comment.likes_count - 1
+                : comment.likes_count + 1,
             };
           }
 
@@ -212,8 +219,8 @@ const BlogDetail = () => {
                   ...reply,
                   is_like: !reply.is_like,
                   like_count: reply.is_like
-                    ? reply.like_count - 1
-                    : reply.like_count + 1,
+                    ? reply.likes_count - 1
+                    : reply.likes_count + 1,
                 };
               }
               return reply;
@@ -230,7 +237,6 @@ const BlogDetail = () => {
       await commentService.toggleLike(commentId);
     } catch (error) {
       console.error("Failed to toggle comment like:", error);
-      // Có thể revert lại state nếu cần
     }
   };
 
@@ -246,7 +252,7 @@ const BlogDetail = () => {
       // Cập nhật state sau khi API thành công
       const updateCommentRecursively = (comments) => {
         return comments.map((comment) => {
-          if (comment.id === commentId) {
+          if (comment?.id === commentId) {
             return {
               ...comment,
               content: newContent,
@@ -308,10 +314,9 @@ const BlogDetail = () => {
     setLikes(isLiked ? likes - 1 : likes + 1);
 
     try {
-      // FIX: Sử dụng postService thay vì commentService cho post
-      (await postService.toggleLike)
-        ? postService.toggleLike(post?.id)
-        : commentService.toggleLike(post?.id);
+      await postService.toggleLikePost(post?.id);
+      setIsLiked(!isLiked);
+      setLikes(isLiked ? likes - 1 : likes + 1);
     } catch (error) {
       // Revert on error
       setIsLiked(previousIsLiked);

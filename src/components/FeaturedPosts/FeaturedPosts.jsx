@@ -3,6 +3,7 @@ import PostCard from "../PostCard/PostCard";
 import EmptyState from "../EmptyState/EmptyState";
 import Loading from "../Loading/Loading";
 import styles from "./FeaturedPosts.module.scss";
+import postService from "../../services/postService";
 
 const FeaturedPosts = ({
   posts = [],
@@ -42,8 +43,27 @@ const FeaturedPosts = ({
       </section>
     );
   }
+  const sortedPosts = [...posts].sort((a, b) => b.likes_count - a.likes_count);
+  const handleLike = async (postId) => {
+    try {
+      return await postService.toggleLikePost(postId);
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+  const handleBookmark = async (postId) => {
+    try {
+      return await postService.toggleBookmarkPost(postId);
+    } catch (error) {
+      const check =
+        Object.keys(error).length === 0 && error.constructor === Object;
+      throw new Error(
+        !check ? error : "You must be logged in to save this post."
+      );
+    }
+  };
 
-  const displayPosts = posts.slice(0, maxPosts);
+  const displayPosts = sortedPosts.slice(0, maxPosts);
 
   return (
     <section
@@ -65,11 +85,16 @@ const FeaturedPosts = ({
               thumbnail={post.thumbnail}
               user_id={post.user}
               description={post.description}
-              like_count={post.like_count}
+              likes_count={post.likes_count}
+              views_count={post.views_count}
               published_at={post.published_at}
               readTime={post.readTime}
               like={post.like_count}
               topic={post.topic?.first_name}
+              isLiked={post?.is_like || false}
+              onLike={(id, liked) => handleLike(id, liked)}
+              onBookmark={(id, liked) => handleBookmark(id, liked)}
+              isBookmarked={post?.is_bookmark || false}
               slug={post.slug}
               featuredImage={post.featuredImage}
             />

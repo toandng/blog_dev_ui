@@ -125,7 +125,7 @@ const CommentSection = ({
           comments.map((comment) => {
             return (
               <CommentItem
-                key={comment.id}
+                key={comment?.id}
                 comment={comment}
                 onReply={isAuthenticated ? handleReply : undefined}
                 onLike={isAuthenticated ? onLikeComment : undefined}

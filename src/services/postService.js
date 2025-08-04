@@ -29,7 +29,14 @@ export const toggleBookmarkPost = async (id) => {
   const result = await httpRequest.post(`/bookmarks/${id}`);
   return result;
 };
-
+export const toggleLikePost = async (id) => {
+  const result = await httpRequest.post(`/posts/${id}/like`);
+  return result;
+};
+export const getListByUserBookmarks = async () => {
+  const result = await httpRequest.get(`/posts/user/bookmarks`);
+  return result;
+};
 export const getRelatedPosts = async (currentPostId) => {
   const result = await httpRequest.get(`/posts/${currentPostId}/related`);
   return result;
@@ -52,16 +59,23 @@ export const remove = async (id) => {
 
   return post.data;
 };
+export const updateViews = async (id) => {
+  const result = await httpRequest.post(`/posts/views/${id}`);
+  return result;
+};
 
 export default {
   getList,
   getAllByMe,
   getListTopicById,
+  getListByUserBookmarks,
   getByUserName,
   getBySlug,
   getRelatedPosts,
   toggleBookmarkPost,
+  toggleLikePost,
   create,
   update,
   remove,
+  updateViews,
 };
