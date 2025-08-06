@@ -32,7 +32,7 @@ const Profile = () => {
   const [isFollow, setIsFollow] = useState(false);
   const [followers, setFollowers] = useState(0);
   const { currentUser } = useUser();
-  console.log(currentUser);
+  // console.log(currentUser);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -300,13 +300,13 @@ const Profile = () => {
                 <p>{profile.about}</p>
               </div>
             )}
-
             {/* Stats */}
+            {/* // Cập nhật lại phần statsCard */}
             <div className={styles.statsCard}>
               <h3>Stats</h3>
               <div className={styles.stats}>
                 <div className={styles.stat}>
-                  <strong>{profile?.posts_count}</strong>
+                  <strong>{profile.stats?.posts_count || 0}</strong>
                   <span>Posts</span>
                 </div>
                 <div className={styles.stat}>
@@ -314,16 +314,15 @@ const Profile = () => {
                   <span>Followers</span>
                 </div>
                 <div className={styles.stat}>
-                  <strong>{profile?.following_count}</strong>
+                  <strong>{profile.stats?.following || 0}</strong>
                   <span>Following</span>
                 </div>
                 <div className={styles.stat}>
-                  <strong>{profile?.like_count}</strong>
+                  <strong>{profile.stats?.likes || 0}</strong>
                   <span>Likes</span>
                 </div>
               </div>
             </div>
-
             {/* Skills */}
             {profile.skills && profile.skills.length > 0 && (
               <div className={styles.skillsCard}>
@@ -341,7 +340,6 @@ const Profile = () => {
                 </div>
               </div>
             )}
-
             {/* Badges */}
             {profile.badges && profile.badges.length > 0 && (
               <div className={styles.badgesCard}>
@@ -359,7 +357,6 @@ const Profile = () => {
                 </div>
               </div>
             )}
-
             {/* Additional Info */}
             <div className={styles.infoCard}>
               <h3>Info</h3>
@@ -392,7 +389,6 @@ const Profile = () => {
                 </div>
               </div>
             </div>
-
             {/* Social Links */}
             {profile.social &&
               (profile.social.twitter ||
@@ -486,9 +482,9 @@ const Profile = () => {
                 <div className={styles.aboutTab}>
                   <AuthorInfo
                     user={{
-                      first_name: profile.first_name,
-                      last_name: profile.last_name,
-                      username: profile.username,
+                      first_name: profile?.first_name,
+                      last_name: profile?.last_name,
+                      username: profile?.username,
                       social: {
                         twitter: profile?.twitter_url,
                         github: profile?.github_url,
@@ -499,7 +495,7 @@ const Profile = () => {
                       bio: profile.bio,
                       avatar: profile.avatar,
 
-                      postsCount: profile.stats.posts_count,
+                      posts_count: profile.stats.posts_count,
                       followers: profile.stats.followers,
                       following: profile.stats.following,
                     }}

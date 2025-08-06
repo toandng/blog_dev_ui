@@ -135,11 +135,14 @@ const PostCard = ({
       {/* Content */}
       <div className={styles.content}>
         {/* Topic Badge */}
-        {topic && (
-          <div className={styles.topicBadge}>
-            <Badge variant="primary" size="sm">
-              {topic}
-            </Badge>
+        {/* Đã sửa: Kiểm tra topic là mảng trước khi map */}
+        {Array.isArray(topic) && topic.length > 0 && (
+          <div className={styles.topicBadges}>
+            {topic.map((t) => (
+              <Badge key={t.id} variant="primary" size="sm">
+                {t.name}
+              </Badge>
+            ))}
           </div>
         )}
 
@@ -226,6 +229,13 @@ const PostCard = ({
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
+                    <circle
+                      cx="8"
+                      cy="8"
+                      r="2"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    />
                   </svg>
                   {optimisticLikes}
                 </span>
@@ -240,6 +250,13 @@ const PostCard = ({
                       strokeWidth="1.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
+                    />
+                    <circle
+                      cx="8"
+                      cy="8"
+                      r="2"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
                     />
                   </svg>
                   {viewCount}
@@ -319,7 +336,13 @@ PostCard.propTypes = {
   }).isRequired,
   published_at: PropTypes.string.isRequired,
   readTime: PropTypes.number,
-  topic: PropTypes.string,
+  // Đã sửa: topic là một mảng
+  topic: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      name: PropTypes.string.isRequired,
+    })
+  ),
   slug: PropTypes.string,
   featuredImage: PropTypes.string,
   loading: PropTypes.bool,

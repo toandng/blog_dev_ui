@@ -35,6 +35,8 @@ export const toggleLikePost = async (id) => {
 };
 export const getListByUserBookmarks = async () => {
   const result = await httpRequest.get(`/posts/user/bookmarks`);
+  console.log(result);
+
   return result;
 };
 export const getRelatedPosts = async (currentPostId) => {

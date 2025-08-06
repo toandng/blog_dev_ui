@@ -6,23 +6,31 @@ import Card from "../../components/Card/Card";
 import FallbackImage from "../../components/FallbackImage/FallbackImage";
 import styles from "./EditProfile.module.scss";
 
-import userService from "../../services/userService";
 // import isHttps from "../../utils/isHttps";
 import useUser from "../../hook/useUser";
+import userService from "../../services/userService";
 
 const EditProfile = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [settings, setSettings] = useState(null);
 
   // Mock current user data - trong thực tế sẽ fetch từ API hoặc context
   const { currentUser } = useUser();
-  console.log(currentUser);
+
+  console.log(settings);
 
   useEffect(() => {
-    setUser(currentUser?.data);
+    if (currentUser) {
+      setUser(currentUser?.data);
+      if (currentUser.data.settings) {
+        setSettings(JSON.parse(currentUser.data.settings.data));
+      }
+    }
   }, [currentUser]);
 
   const [formData, setFormData] = useState({
+    fullname: user?.fullname || "",
     first_name: user?.first_name || "",
     last_name: user?.last_name || "",
     username: user?.username || "",
@@ -37,7 +45,11 @@ const EditProfile = () => {
       github_url: user?.github_url || "",
       linkedin_url: user?.linkedin_url || "",
     },
-    skills: user?.skills ? JSON.parse(user?.skills)?.join(", ") || "" : "",
+    skills:
+      typeof user?.skills === "string"
+        ? JSON.parse(user?.skills || null)?.join(", ") || ""
+        : [],
+
     privacy: {
       profileVisibility: "public", // public, private
       showEmail: false,
@@ -53,10 +65,8 @@ const EditProfile = () => {
   const [imagePreviews, setImagePreviews] = useState({});
 
   useEffect(() => {
-    if (!user) return;
     setFormData({
-      name: `${user.first_name || ""} ${user.last_name || ""}`.trim(),
-
+      fullname: user?.fullname || "",
       first_name: user?.first_name || "",
       last_name: user?.last_name || "",
       username: user?.username || "",
@@ -71,10 +81,14 @@ const EditProfile = () => {
         github_url: user?.github_url || "",
         linkedin_url: user?.linkedin_url || "",
       },
-      skills: user?.skills ? JSON.parse(user?.skills)?.join(", ") || "" : "",
+      skills:
+        typeof user?.skills === "string"
+          ? JSON.parse(user?.skills || null)?.join(", ") || ""
+          : [],
+
       privacy: {
-        profileVisibility: "public", // public, private
-        showEmail: false,
+        profileVisibility: settings?.defaultPostVisibility || "public", // public, private
+        showEmail: settings?.showEmail || false,
         showFollowersCount: true,
         showFollowingCount: true,
         allowDirectMessages: true,
@@ -90,7 +104,7 @@ const EditProfile = () => {
       avatar: user?.avatar,
       cover_image: user?.cover_image,
     });
-  }, [user]);
+  }, [user, settings]);
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -107,13 +121,15 @@ const EditProfile = () => {
       }));
     } else if (field.startsWith("privacy.")) {
       const privacyField = field.split(".")[1];
-      setFormData((prev) => ({
-        ...prev,
-        privacy: {
-          ...prev.privacy,
-          [privacyField]: value,
-        },
-      }));
+      setFormData((prev) => {
+        return {
+          ...prev,
+          privacy: {
+            ...prev.privacy,
+            [privacyField]: value,
+          },
+        };
+      });
     } else {
       setFormData((prev) => ({
         ...prev,
@@ -178,8 +194,8 @@ const EditProfile = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = "Fullname is required";
+    if (!formData.fullname.trim()) {
+      newErrors.fullname = "Fullname is required";
     }
 
     if (!formData.username.trim()) {
@@ -245,8 +261,8 @@ const EditProfile = () => {
 
       // Thêm text data
       formDataToSend.append(
-        "name",
-        formData.name || `${formData.first_name} ${formData.last_name}`
+        "fullname",
+        formData.fullname || `${formData.first_name} ${formData.last_name}`
       );
       formDataToSend.append("username", formData.username);
       formDataToSend.append("title", formData.title);
@@ -414,7 +430,7 @@ const EditProfile = () => {
                 <Input
                   label="Full Name"
                   value={
-                    formData?.name ||
+                    formData?.fullname ||
                     `${formData?.first_name} ${formData?.last_name}`
                   }
                   onChange={(e) =>

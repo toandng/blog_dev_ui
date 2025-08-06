@@ -5,18 +5,27 @@ import Button from "../Button/Button";
 import FallbackImage from "../FallbackImage/FallbackImage";
 import NotificationDropdown from "../NotificationDropdown/NotificationDropdown";
 import styles from "./Header.module.scss";
-import { useAuth } from "../../context/AuthContext";
+import useUser from "../../hook/useUser";
+import isHttps from "../../utils/isHttps";
 
 const Header = () => {
   // Mock authentication state - trong thực tế sẽ từ context/store
-  const { user, isAuthenticated, logout } = useAuth();
-  //   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  //   const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const dropdownRef = useRef(null);
   const notificationRef = useRef(null);
+
+  const { currentUser } = useUser();
+
+  useEffect(() => {
+    if (currentUser) {
+      setIsAuthenticated(true);
+      setUser(currentUser.data);
+    }
+  }, [currentUser]);
 
   // Mock notifications data
   const mockNotifications = [
@@ -58,11 +67,10 @@ const Header = () => {
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   // Toggle auth state for demo (remove in production)
-  //   const toggleAuth = () => {
+  // const toggleAuth = () => {
   //     setIsAuthenticated(!isAuthenticated);
-  //     setUser(isAuthenticated ? null : mockUser);
   //     setIsDropdownOpen(false);
-  //   };
+  // };
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -95,9 +103,11 @@ const Header = () => {
   }, []);
 
   const handleLogout = () => {
-    // setIsAuthenticated(false);
-    // setUser(null);
-    logout();
+    localStorage.removeItem("token");
+    localStorage.removeItem("refresh_token");
+
+    setIsAuthenticated(false);
+    setUser(null);
     setIsDropdownOpen(false);
     setIsNotificationOpen(false);
   };
@@ -169,11 +179,18 @@ const Header = () => {
                     aria-haspopup="true"
                   >
                     <FallbackImage
-                      src={user?.avatar}
-                      alt={user?.name}
+                      src={
+                        isHttps(user?.avatar)
+                          ? user?.avatar
+                          : `${import.meta.env.VITE_BASE_URL}/${user?.avatar}`
+                      }
+                      alt={user?.username}
                       className={styles.userAvatar}
                     />
-                    <span className={styles.userName}>{user?.username}</span>
+                    <span className={styles.userName}>
+                      {user?.fullname ||
+                        `${user?.first_name} ${user?.last_name}`}
+                    </span>
                     <svg
                       className={`${styles.chevron} ${
                         isDropdownOpen ? styles.chevronOpen : ""
@@ -198,19 +215,20 @@ const Header = () => {
                       <div className={styles.dropdownHeader}>
                         <div className={styles.dropdownUserInfo}>
                           <div className={styles.dropdownUserName}>
-                            {user?.name}
+                            {user?.fullname ||
+                              `${user?.first_name} ${user?.last_name}`}
                           </div>
                           <div className={styles.dropdownUserEmail}>
                             {user?.email}
                           </div>
                           <div className={styles.dropdownUserRole}>
-                            {user?.role}
+                            {user?.role ?? "Author"}
                           </div>
                         </div>
                       </div>
                       <nav className={styles.dropdownNav}>
                         <Link
-                          to={`/profile/${user.username}`}
+                          to={`/profile/${user?.username || "john-doe"}`}
                           className={styles.dropdownItem}
                         >
                           <svg
@@ -317,12 +335,12 @@ const Header = () => {
 
             {/* Demo Toggle Button (remove in production) */}
             {/* <button
-              onClick={toggleAuth}
-              className={styles.demoToggle}
-              title="Toggle auth state (demo)"
-            >
-              🔄
-            </button> */}
+                            onClick={toggleAuth}
+                            className={styles.demoToggle}
+                            title="Toggle auth state (demo)"
+                        >
+                            🔄
+                        </button> */}
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -362,7 +380,11 @@ const Header = () => {
               <div className={styles.mobileUserMenu}>
                 <div className={styles.mobileUserInfo}>
                   <FallbackImage
-                    src={user?.avatar}
+                    src={
+                      isHttps(user?.avatar)
+                        ? user?.avatar
+                        : `${import.meta.env.VITE_BASE_URL}/${user?.avatar}`
+                    }
                     alt={user?.name}
                     className={styles.mobileUserAvatar}
                   />
@@ -373,7 +395,7 @@ const Header = () => {
                 </div>
                 <nav className={styles.mobileUserNav}>
                   <Link
-                    to={`/profile/${user.username}`}
+                    to={`/profile/${user?.username || "john-doe"}`}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Profile

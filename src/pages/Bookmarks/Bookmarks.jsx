@@ -7,6 +7,8 @@ import Badge from "../../components/Badge/Badge";
 import Button from "../../components/Button/Button";
 import styles from "./Bookmarks.module.scss";
 import postService from "../../services/postService";
+import bookmarkService from "../../services/bookmarkService";
+import { toast } from "react-toastify";
 
 const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState([]);
@@ -14,11 +16,16 @@ const Bookmarks = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTopic, setSelectedTopic] = useState("all");
 
+  // Mock bookmarked posts data
+
   useEffect(() => {
     // Simulate API call
     const fetchBookmarks = async () => {
       setLoading(true);
+
       const { data } = await postService.getListByUserBookmarks();
+      console.log(data);
+
       setBookmarks(data);
       setLoading(false);
     };
@@ -26,9 +33,10 @@ const Bookmarks = () => {
     fetchBookmarks();
   }, []);
 
-  const hanldeLike = async (postId) => {
+  const handleLike = async (postId) => {
     try {
       const test = await postService.toggleLikePost(postId);
+
       console.log(test);
     } catch (error) {
       console.log(error);
@@ -46,7 +54,7 @@ const Bookmarks = () => {
   // Get all unique topics from bookmarks
   const availableTopics = [
     ...new Set(bookmarks.flatMap((bookmark) => bookmark.topics)),
-  ].sort();
+  ].sort((a, b) => a.name.localeCompare(b.name));
 
   const filteredBookmarks = bookmarks.filter((bookmark) => {
     const matchesSearch =
@@ -66,9 +74,17 @@ const Bookmarks = () => {
     );
   };
 
-  const handleClearAllBookmarks = () => {
+  const handleClearAllBookmarks = async () => {
     if (window.confirm("Are you sure you want to remove all bookmarks?")) {
-      setBookmarks([]);
+      try {
+        const bookmarkIds = bookmarks.map((item) => item.bookmarks.id);
+
+        await bookmarkService.remove(bookmarkIds);
+        setBookmarks([]);
+        toast.success("You have removed all saved posts.");
+      } catch (error) {
+        toast.error(error);
+      }
     }
   };
 
@@ -140,9 +156,9 @@ const Bookmarks = () => {
                 className={styles.topicFilter}
               >
                 <option value="all">All Topics</option>
-                {availableTopics.map((topic) => (
-                  <option key={topic} value={topic}>
-                    {topic}
+                {availableTopics.map((topic, i) => (
+                  <option key={i} value={topic.name}>
+                    {topic.name}
                   </option>
                 ))}
               </select>
@@ -188,7 +204,7 @@ const Bookmarks = () => {
                     slug={bookmark.slug}
                     featuredImage={bookmark.thumbnail}
                     isLiked={bookmark?.is_like ? true : false}
-                    onLike={(id, liked) => hanldeLike(id, liked)}
+                    onLike={(id, liked) => handleLike(id, liked)}
                     onBookmark={(id, liked) => handleBookmark(id, liked)}
                     isBookmarked={bookmark?.is_bookmark || false}
                   />
