@@ -278,7 +278,7 @@ const BlogDetail = () => {
   };
   const handleDeleteComment = async (commentId) => {
     try {
-      await commentService.update(commentId, { deleted_at: "delete" });
+      await commentService.update(commentId);
 
       // Xoá comment khỏi UI
       const deleteCommentRecursively = (comments) => {

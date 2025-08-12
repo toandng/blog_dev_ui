@@ -10,8 +10,8 @@ export const create = async (data) => {
   return response.data;
 };
 
-export const update = async (data, id) => {
-  const result = await httpRequest.put(`/comments/${id}`, data);
+export const update = async (id) => {
+  const result = await httpRequest.put(`/comments/${id}`);
   return result;
 };
 
