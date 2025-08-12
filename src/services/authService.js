@@ -87,13 +87,9 @@ export const verifyToken = async (token) => {
   return result;
 };
 
-export const resetPassword = async (formData) => {
-  const data = await httpRequest.post("/auth/reset-password", {
-    password: formData.password,
-    confirmPassword: formData.confirmPassword,
-    token: formData.token,
-  });
-  return data;
+export const resetPassword = async (data) => {
+  const result = await httpRequest.post(`/auth/reset-password`, data);
+  return result;
 };
 
 export default {

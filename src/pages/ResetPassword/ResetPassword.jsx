@@ -2,12 +2,11 @@ import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Input, Button } from "../../components";
 import styles from "./ResetPassword.module.scss";
-import { resetPassword } from "../../services/authService";
+import authService from "../../services/authService";
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
-  console.log(token);
 
   const [formData, setFormData] = useState({
     password: "",
@@ -18,6 +17,8 @@ const ResetPassword = () => {
   const [isTokenValid, setIsTokenValid] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const [userId, setUserId] = useState(null);
+
   useEffect(() => {
     // Validate token on component mount
     const validateToken = async () => {
@@ -25,15 +26,24 @@ const ResetPassword = () => {
         setIsTokenValid(false);
         return;
       }
+
       try {
-        setIsTokenValid(true);
+        const { data } = await authService.verifyToken(token);
+
+        setUserId(data.userId);
+
+        // Mock token validation (in real app, this would be an API call)
+        const isValid = token.length > 10; // Simple mock validation
+
+        setIsTokenValid(isValid);
       } catch (error) {
         console.error("Token validation failed:", error);
         setIsTokenValid(false);
       }
     };
+
     validateToken();
-  }, [formData.email, token]);
+  }, [token]);
 
   const validateForm = () => {
     const newErrors = {};
@@ -82,18 +92,13 @@ const ResetPassword = () => {
       return;
     }
 
+    await authService.resetPassword({
+      ...formData,
+      userId,
+    });
     setIsSubmitting(true);
 
     try {
-      console.log(formData.password);
-
-      const result = await resetPassword({
-        password: formData.password,
-        token,
-        confirmPassword: formData.password,
-      });
-
-      console.log("Password reset successful");
       setIsSubmitted(true);
     } catch (error) {
       console.error("Password reset failed:", error);

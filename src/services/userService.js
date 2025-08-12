@@ -28,10 +28,17 @@ export const toggleFollower = async (userId) => {
 
   return result;
 };
+export const settings = async (data) => {
+  const result = await httpRequest.post(`/users/settings`, data);
+  console.log(result);
+
+  return result;
+};
 export default {
   getUserByUserName,
   toggleFollower,
   // getCurrentUser,
   editProfile,
   checkFollower,
+  settings,
 };
