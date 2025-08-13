@@ -15,6 +15,10 @@ export const update = async (id) => {
   return result;
 };
 
+// export const remove = async (id) => {
+//   const result = await httpRequest.del(`/comments/${id}`);
+//   return result;
+// };
 export const toggleLike = async (commentId) => {
   const result = await httpRequest.post(`/comments/${commentId}/like`);
   return result;

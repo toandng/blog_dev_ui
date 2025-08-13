@@ -246,7 +246,7 @@ const BlogDetail = () => {
       // Gọi API trước
       await commentService.update(commentId, {
         content: newContent,
-        edited_at: new Date().toISOString(),
+        edited_at: Date.now(),
       });
 
       // Cập nhật state sau khi API thành công
@@ -257,7 +257,6 @@ const BlogDetail = () => {
               ...comment,
               content: newContent,
               isEdited: true,
-              edited_at: new Date().toISOString(),
             };
           }
           if (comment.replies && comment.replies.length > 0) {
@@ -278,7 +277,9 @@ const BlogDetail = () => {
   };
   const handleDeleteComment = async (commentId) => {
     try {
-      await commentService.update(commentId);
+      await commentService.update(commentId, {
+        deleted_at: Date.now(),
+      });
 
       // Xoá comment khỏi UI
       const deleteCommentRecursively = (comments) => {
